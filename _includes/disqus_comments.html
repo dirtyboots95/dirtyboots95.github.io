@@ -1,9 +1,9 @@
-{%- if site.disqus_shortname and page.comments -%}
+{%- if site.disqus.shortname or page.comments != false -%}
 <div id="disqus_thread" style="margin-top: 3rem;"></div>
 <script>
     var disqus_config = function () {
-        this.page.url = "{{ page.url | absolute_url }}";
-        this.page.identifier = "{{ page.url | absolute_url }}";
+        this.page.url = "https://dirtyboots95.github.io/{{ page.url }}";
+        this.page.identifier = "{{ page.id }}";
     };
     (function () { // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
