@@ -39,7 +39,7 @@ theme_config:
   date_format: "%Y-%m-%d" # customize how date is formatted
   show_description: true # show blog description in home page
 #  lowercase_titles: true # show titles in lowercase in lists
-  disqus_shortname: dirtyboots95
+disqus_shortname: dirtyboots95
 
 sass:
   style: compressed
