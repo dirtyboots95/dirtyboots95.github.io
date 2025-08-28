@@ -1,0 +1,6 @@
+{
+  // Tell the SCSS language server where to look for @import files
+  "scss.includePaths": [
+    "_sass"
+  ]
+}
