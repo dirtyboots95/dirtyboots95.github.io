@@ -3,32 +3,38 @@ name: Build and Deploy Jekyll
 on:
   push:
     branches:
-      - main   # 네가 작업하는 브랜치 이름
+      - main   # 소스코드 작업 브랜치
 
 jobs:
-  jekyll:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      # 1. 저장소 체크아웃
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Ruby 환경 설정
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'   # Gemfile에 맞는 버전 지정
+          ruby-version: '3.3'
 
+      # 3. Gem 설치
       - name: Install dependencies
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
 
+      # 4. Jekyll 빌드
       - name: Build Jekyll site
         run: bundle exec jekyll build -d _site
 
+      # 5. 빌드 결과 gh-pages 브랜치로 배포
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          publish_branch: gh-pages
+          publish_dir: ./_site       # _site만 배포
+          publish_branch: gh-pages   # 배포 브랜치
+          force_orphan: true         # gh-pages 브랜치를 _site로 덮어쓰기
