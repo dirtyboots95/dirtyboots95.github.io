@@ -1,5 +1,8 @@
 ---
 layout: post
+title: "Jektex 테스트"
+date: 2023-02-03 10:00:00 +0900
+category: journal
 ---
 
 This post is here to test [$$\jektex$$](https://github.com/yagarea/jektex),
@@ -17,4 +20,3 @@ $$ \left[ \frac{-\hbar^2}{2\mu}\nabla^2 + V(\mathbf{r},t)\right] \Psi(\mathbf{r}
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
 ea commodo consequat.
-

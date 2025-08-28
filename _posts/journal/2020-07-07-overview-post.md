@@ -1,6 +1,8 @@
 ---
 layout: post
-category: example
+title: "Theme Overview Post"
+date: 2020-07-07 10:00:00 +0900
+category: journal
 ---
 
 Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit. Pellentesque vel lacinia neque. Praesent nulla quam, ullamcorper in sollicitudin ac, molestie sed justo. Cras aliquam, sapien id consectetur accumsan, augue magna faucibus ex, ut ultricies turpis tortor vel ante. In at rutrum tellus.
