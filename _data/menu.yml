@@ -1,5 +1,6 @@
 entries:
   - title: About
+    url: /about.html
     entries:
       - title: a (nearly) no-CSS, fast, minimalist Jekyll theme.
       - title: github repo
@@ -7,6 +8,7 @@ entries:
       - title: "used by <a href='https://riggraz.dev'>riggraz.dev</a> and <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
 
   - title: Journal
+    url: /archive.html
     post_list:
       limit: 5
       show_more: true

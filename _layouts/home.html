@@ -1,13 +1,37 @@
 ---
 layout: default
 ---
-<header>
+<header class="site-header">
   <h1>{{ site.title }}</h1>
   {%-if site.theme_config.show_description-%}
     <p>{{ site.description }}</p>
   {%-endif-%}
 </header>
 
-{%-include menu_item.html collection=site.data.menu.entries-%}
+<main>
+  {%- for item in site.data.menu.entries -%}
+    <div>
+      <h3><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h3>
+
+      {%- if item.entries -%}
+        <ul>
+          {%- for sub_item in item.entries -%}
+            <li>
+              {%- if sub_item.url -%}
+                <a href="{{ sub_item.url }}" target="_blank" rel="noopener">{{ sub_item.title }}</a>
+              {%- else -%}
+                {{ sub_item.title }}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if item.post_list -%}
+        {%- include post_list.html post_list=item.post_list -%}
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</main>
 
 {{ content }}

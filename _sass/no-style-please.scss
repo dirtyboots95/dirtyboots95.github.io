@@ -39,7 +39,7 @@ body {
 
 .post-meta { text-align: right; }
 
-h2, h3, h4, h5, h6 { margin-top: 3rem; }
+h1, h2, h3, h4, h5, h6 { margin-top: 3rem; }
 
 hr { margin: 2rem 0; }
 
@@ -89,6 +89,25 @@ blockquote {
   padding: 1rem;
 
   p { margin: 0; }
+}
+
+.site-header {
+  /*
+    아래 url을 실제 이미지 경로로 변경할 수 있습니다.
+    이미지는 /assets/images/ 폴더에 넣는 것을 추천합니다.
+    예: url('/assets/images/my-background.jpg')
+  */
+  background-image: url('/assets/images/header-background.png');
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.site-header a,
+.site-header p {
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 img {

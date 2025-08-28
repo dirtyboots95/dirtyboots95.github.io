@@ -1,0 +1,6 @@
+<header class="site-header">
+  <p><a href="{{ "/" | relative_url }}">{{ site.title }}</a></p>
+  {%- if site.theme_config.show_description -%}
+    <p>{{ site.description }}</p>
+  {%- endif -%}
+</header>
