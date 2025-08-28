@@ -46,7 +46,12 @@ sass:
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-#  - jektex
+
+# Collections
+collections:
+  gallery:
+    output: true
+    permalink: /gallery/:slug.html
 
 #jektex:
 #  cache_dir: ".jektex-cache"

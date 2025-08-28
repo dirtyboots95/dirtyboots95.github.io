@@ -35,5 +35,8 @@ entries:
       show_more_text: 더 보기...
       show_more_url: movie.html
 
+  - title: Gallery
+    url: /gallery.html
+
   - title: Guestbook
     url: /guestbook.html
