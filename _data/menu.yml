@@ -37,6 +37,7 @@ entries:
 
   - title: Gallery
     url: /gallery.html
+    gallery_preview: true
 
   - title: Guestbook
     url: /guestbook.html

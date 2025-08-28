@@ -30,6 +30,15 @@ layout: default
       {%- if item.post_list -%}
         {%- include post_list.html post_list=item.post_list -%}
       {%- endif -%}
+
+      {%- if item.gallery_preview -%}
+        {%- assign latest_gallery_item = site.gallery | last -%}
+        {%- if latest_gallery_item -%}
+          <a href="{{ latest_gallery_item.url | relative_url }}" style="display: block; margin-top: 1rem;">
+            <img src="{{ latest_gallery_item.image | relative_url }}" alt="{{ latest_gallery_item.title }}">
+          </a>
+        {%- endif -%}
+      {%- endif -%}
     </div>
   {%- endfor -%}
 </main>
