@@ -1,0 +1,4 @@
+---
+layout: journal
+title: Journal
+---

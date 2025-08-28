@@ -10,6 +10,18 @@
   iframe {
     filter: invert(1);
   }
+
+  // 다크 모드일 때 헤더를 제외한 주요 콘텐츠 영역의 링크 색상을 변경합니다.
+  main a:link,
+  .w a:link {
+    filter: invert(1); // body의 색상 반전을 무효화합니다.
+    color: #50fa7b; // 클릭 전 링크 색상 (선명한 녹색)
+  }
+  main a:visited,
+  .w a:visited {
+    filter: invert(1); // body의 색상 반전을 무효화합니다.
+    color: #2e8b57; // 클릭 후 링크 색상 (차분한 녹색)
+  }
 }
 
 body[a="dark"] { @include dark-appearance; }
