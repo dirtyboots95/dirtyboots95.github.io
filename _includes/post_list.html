@@ -9,7 +9,7 @@
 {%-endif-%}
 
 {%- if posts_source.size > 0 -%}
-  <ul>
+  <ul style="margin-top: 1rem;">
     {%- for post in posts_source limit: list_config.limit -%}
     <li>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>

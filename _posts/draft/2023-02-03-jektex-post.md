@@ -2,7 +2,7 @@
 layout: post
 title: "Jektex 테스트"
 date: 2023-02-03 10:00:00 +0900
-category: journal
+category: draft
 ---
 
 This post is here to test [$$\jektex$$](https://github.com/yagarea/jektex),

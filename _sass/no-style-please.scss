@@ -128,6 +128,17 @@ body {
 
 h1, h2, h3, h4, h5, h6 { margin-top: 2rem; }
 
+// h2와 ul 사이의 간격을 강제로 설정
+h2 + ul,
+.w h2 + ul,
+.w div h2 + ul,
+.w h2 ~ ul,
+.menu-section h2 + ul,
+.archive-section h2 + ul {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
 // site-header 내의 h1은 위아래 마진을 동일하게 설정
 .site-header h1 {
   margin: 1rem 0;

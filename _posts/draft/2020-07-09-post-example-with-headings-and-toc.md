@@ -2,7 +2,7 @@
 layout: post
 title: "Post Example with Headings and TOC"
 date: 2020-07-09 11:00:00 +0900
-category: journal
+category: draft
 ---
 
 Mauris viverra dictum ultricies. Vestibulum quis ipsum euismod, facilisis metus sed, varius ipsum. Donec scelerisque lacus libero, eu dignissim sem venenatis at. Nunc a egestas tortor, sed feugiat leo.

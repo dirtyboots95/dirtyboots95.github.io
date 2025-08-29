@@ -3,11 +3,11 @@ layout: default
 ---
 
 {%- for item in site.data.menu.entries -%}
-  <div>
+  <div class="menu-section">
     <h2><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h2>
 
     {%- if item.entries -%}
-      <ul>
+      <ul style="margin-top: 1rem;">
         {%- for sub_item in item.entries -%}
           <li>
             {%- if sub_item.url -%}
