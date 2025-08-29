@@ -1,0 +1,16 @@
+{% comment %}
+  Google Analytics 4 추적 코드
+  사용법: {% include google_analytics.html %}
+{% endcomment %}
+
+{% if site.analytics.google.id and jekyll.environment == "production" %}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H9LCES4944"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H9LCES4944');
+</script>
+{% endif %}
