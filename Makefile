@@ -16,11 +16,16 @@ clean:
 
 # 새 게시물 생성 (대화형)
 new-post:
-	ruby create_post.rb
+	@read -p "브랜치 이름을 입력하세요 (예: feature/new-post): " branch_name; \
+	git checkout -b $$branch_name; \
+	ruby create_post.rb; \
+	echo "✅ 게시물이 생성되었습니다. 브랜치를 푸시하려면 'make push-feature'를 실행하세요."
 
 # 새 journal 게시물 생성
 new-journal:
-	@read -p "제목을 입력하세요: " title; \
+	@read -p "브랜치 이름을 입력하세요 (예: feature/journal-post): " branch_name; \
+	git checkout -b $$branch_name; \
+	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/journal/$$date-$$safe_title.md"; \
@@ -40,11 +45,16 @@ new-journal:
 		echo "" >> $$filename; \
 		echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
-	echo "✅ Journal 게시물이 생성되었습니다: $$filename"
+	git add $$filename; \
+	git commit -m "Add journal post: $$title"; \
+	git push origin $$branch_name; \
+	echo "✅ Journal 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
 
 # 새 book 게시물 생성
 new-book:
-	@read -p "제목을 입력하세요: " title; \
+	@read -p "브랜치 이름을 입력하세요 (예: feature/book-review): " branch_name; \
+	git checkout -b $$branch_name; \
+	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/book/$$date-$$safe_title.md"; \
@@ -64,11 +74,16 @@ new-book:
 		echo "" >> $$filename; \
 		echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
-	echo "✅ Book 게시물이 생성되었습니다: $$filename"
+	git add $$filename; \
+	git commit -m "Add book review: $$title"; \
+	git push origin $$branch_name; \
+	echo "✅ Book 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
 
 # 새 movie 게시물 생성
 new-movie:
-	@read -p "제목을 입력하세요: " title; \
+	@read -p "브랜치 이름을 입력하세요 (예: feature/movie-review): " branch_name; \
+	git checkout -b $$branch_name; \
+	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/movie/$$date-$$safe_title.md"; \
@@ -88,4 +103,45 @@ new-movie:
 		echo "" >> $$filename; \
 		echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
-	echo "✅ Movie 게시물이 생성되었습니다: $$filename"
+	git add $$filename; \
+	git commit -m "Add movie review: $$title"; \
+	git push origin $$branch_name; \
+	echo "✅ Movie 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
+
+# 브랜치 보호를 위한 명령어들
+.PHONY: new-branch push-feature create-pr protect-main
+
+# 새로운 기능 브랜치 생성
+new-branch:
+	@read -p "브랜치 이름을 입력하세요 (예: feature/new-post): " branch_name; \
+	git checkout -b $$branch_name; \
+	echo "✅ 새로운 브랜치가 생성되었습니다: $$branch_name"
+
+# 현재 브랜치를 원격에 푸시
+push-feature:
+	@current_branch=$$(git branch --show-current); \
+	git push origin $$current_branch; \
+	echo "✅ 브랜치가 원격에 푸시되었습니다: $$current_branch"
+
+# Pull Request 생성 (GitHub CLI 필요)
+create-pr:
+	@read -p "PR 제목을 입력하세요: " pr_title; \
+	read -p "PR 설명을 입력하세요: " pr_description; \
+	gh pr create --title "$$pr_title" --body "$$pr_description" --base main; \
+	echo "✅ Pull Request가 생성되었습니다"
+
+# main 브랜치 보호 설정 (로컬)
+protect-main:
+	@echo "🔒 main 브랜치 보호 설정을 시작합니다..."; \
+	git config core.hooksPath .git/hooks; \
+	echo '#!/bin/sh' > .git/hooks/pre-push; \
+	echo 'current_branch=$$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")' >> .git/hooks/pre-push; \
+	echo 'if [ "$$current_branch" = "main" ]; then' >> .git/hooks/pre-push; \
+	echo '  echo "❌ main 브랜치에 직접 push할 수 없습니다!"' >> .git/hooks/pre-push; \
+	echo '  echo "💡 대신 feature 브랜치를 생성하여 작업하세요:"' >> .git/hooks/pre-push; \
+	echo '  echo "   make new-branch"' >> .git/hooks/pre-push; \
+	echo '  exit 1' >> .git/hooks/pre-push; \
+	echo 'fi' >> .git/hooks/pre-push; \
+	chmod +x .git/hooks/pre-push; \
+	echo "✅ main 브랜치 보호가 설정되었습니다!"; \
+	echo "💡 이제 main 브랜치에 직접 push할 수 없습니다."
