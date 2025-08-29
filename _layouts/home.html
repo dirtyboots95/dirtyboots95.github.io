@@ -8,7 +8,8 @@ layout: default
 
     {%- if item.entries -%}
       <ul style="margin-top: 1rem;">
-        {%- for sub_item in item.entries -%}
+        {%- assign sorted_entries = item.entries | sort: 'date' | reverse -%}
+        {%- for sub_item in sorted_entries -%}
           <li>
             {%- if sub_item.url -%}
               <a href="{{ sub_item.url }}" target="_blank" rel="noopener">{{ sub_item.title }}</a>

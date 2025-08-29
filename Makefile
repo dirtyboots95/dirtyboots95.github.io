@@ -22,49 +22,70 @@ new-post:
 new-journal:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	filename="_posts/journal/$$date-$${title// /-}.md"; \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	filename="_posts/journal/$$date-$$safe_title.md"; \
 	mkdir -p _posts/journal; \
-	echo "---" > $$filename; \
-	echo "layout: post" >> $$filename; \
-	echo "title: \"$$title\"" >> $$filename; \
-	echo "date: $$date 10:00:00 +0900" >> $$filename; \
-	echo "category: journal" >> $$filename; \
-	echo "comments: true" >> $$filename; \
-	echo "---" >> $$filename; \
-	echo "" >> $$filename; \
-	echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
+	if [ -f "_templates/journal_template.md" ]; then \
+		cp "_templates/journal_template.md" $$filename; \
+		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
+		sed -i '' "s/게시물 제목/$$title/g" $$filename; \
+	else \
+		echo "---" > $$filename; \
+		echo "layout: post" >> $$filename; \
+		echo "title: \"$$title\"" >> $$filename; \
+		echo "date: $$date 10:00:00 +0900" >> $$filename; \
+		echo "category: journal" >> $$filename; \
+		echo "comments: true" >> $$filename; \
+		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
+	fi; \
 	echo "✅ Journal 게시물이 생성되었습니다: $$filename"
 
 # 새 book 게시물 생성
 new-book:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	filename="_posts/book/$$date-$${title// /-}.md"; \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	filename="_posts/book/$$date-$$safe_title.md"; \
 	mkdir -p _posts/book; \
-	echo "---" > $$filename; \
-	echo "layout: post" >> $$filename; \
-	echo "title: \"$$title\"" >> $$filename; \
-	echo "date: $$date 10:00:00 +0900" >> $$filename; \
-	echo "category: book" >> $$filename; \
-	echo "comments: true" >> $$filename; \
-	echo "---" >> $$filename; \
-	echo "" >> $$filename; \
-	echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
+	if [ -f "_templates/book_template.md" ]; then \
+		cp "_templates/book_template.md" $$filename; \
+		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
+		sed -i '' "s/책 제목/$$title/g" $$filename; \
+	else \
+		echo "---" > $$filename; \
+		echo "layout: post" >> $$filename; \
+		echo "title: \"$$title\"" >> $$filename; \
+		echo "date: $$date 10:00:00 +0900" >> $$filename; \
+		echo "category: book" >> $$filename; \
+		echo "comments: true" >> $$filename; \
+		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
+	fi; \
 	echo "✅ Book 게시물이 생성되었습니다: $$filename"
 
 # 새 movie 게시물 생성
 new-movie:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	filename="_posts/movie/$$date-$${title// /-}.md"; \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	filename="_posts/movie/$$date-$$safe_title.md"; \
 	mkdir -p _posts/movie; \
-	echo "---" > $$filename; \
-	echo "layout: post" >> $$filename; \
-	echo "title: \"$$title\"" >> $$filename; \
-	echo "date: $$date 10:00:00 +0900" >> $$filename; \
-	echo "category: movie" >> $$filename; \
-	echo "comments: true" >> $$filename; \
-	echo "---" >> $$filename; \
-	echo "" >> $$filename; \
-	echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
+	if [ -f "_templates/movie_template.md" ]; then \
+		cp "_templates/movie_template.md" $$filename; \
+		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
+		sed -i '' "s/영화 제목/$$title/g" $$filename; \
+	else \
+		echo "---" > $$filename; \
+		echo "layout: post" >> $$filename; \
+		echo "title: \"$$title\"" >> $$filename; \
+		echo "date: $$date 10:00:00 +0900" >> $$filename; \
+		echo "category: movie" >> $$filename; \
+		echo "comments: true" >> $$filename; \
+		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
+	fi; \
 	echo "✅ Movie 게시물이 생성되었습니다: $$filename"

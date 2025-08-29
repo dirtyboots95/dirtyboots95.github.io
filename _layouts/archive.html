@@ -14,7 +14,8 @@ layout: default
 
 {%- if posts_source.size > 0 -%}
   <ul style="margin-top: 1rem;">
-    {%- for post in posts_source reversed -%}
+    {%- assign sorted_posts = posts_source | sort: 'date' | reverse -%}
+    {%- for post in sorted_posts -%}
     <li>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
       -
