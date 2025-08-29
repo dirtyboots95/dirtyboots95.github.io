@@ -84,6 +84,83 @@ tags: [markdown, example, template]
 
 ![중앙 정렬 이미지]({{ site.baseurl }}/assets/images/placeholder.jpg){: .center-image}
 
+### 유튜브 영상 임베드
+
+#### 기본 유튜브 임베드
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+#### 반응형 유튜브 임베드 (권장)
+<div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+#### 유튜브 링크 (자동 임베드)
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+#### Jekyll Include 방식 (권장)
+{% raw %}{% include youtube.html id="dQw4w9WgXcQ" %}{% endraw %}
+
+#### Jekyll Include 방식 (커스텀 크기)
+{% raw %}{% include youtube.html id="dQw4w9WgXcQ" width="480" height="270" %}{% endraw %}
+
+#### 유튜브 쇼츠
+<iframe width="315" height="560" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+#### 스크린샷 + 링크 방식 (권장)
+[![유튜브 영상 스크린샷]({{ site.baseurl }}/assets/images/youtube-thumbnail.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+#### 스크린샷 + 설명 + 링크
+[![유튜브 영상 스크린샷]({{ site.baseurl }}/assets/images/youtube-thumbnail.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+
+**영상 제목**: 예제 영상 제목  
+**채널**: 예제 채널  
+**재생 시간**: 3:45  
+**설명**: 이 영상은 예제용입니다. 클릭하면 유튜브에서 시청할 수 있습니다.
+
+#### 썸네일 + 재생 버튼 스타일
+<div class="video-thumbnail">
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+    <img src="{{ site.baseurl }}/assets/images/youtube-thumbnail.jpg" alt="유튜브 영상 썸네일">
+    <div class="play-button">▶</div>
+  </a>
+</div>
+
+### 유튜브 스크린샷 추가 방법
+
+#### 1. 유튜브 썸네일 URL 사용
+유튜브 영상 ID를 사용하여 썸네일을 가져올 수 있습니다:
+
+**영상 ID**: `dQw4w9WgXcQ` (URL에서 `v=` 뒤의 부분)
+
+**썸네일 URL 패턴**:
+- 최고 품질: `https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg`
+- 고품질: `https://img.youtube.com/vi/VIDEO_ID/hqdefault.jpg`
+- 중간 품질: `https://img.youtube.com/vi/VIDEO_ID/mqdefault.jpg`
+- 표준 품질: `https://img.youtube.com/vi/VIDEO_ID/sddefault.jpg`
+- 첫 번째 썸네일: `https://img.youtube.com/vi/VIDEO_ID/0.jpg`
+- 두 번째 썸네일: `https://img.youtube.com/vi/VIDEO_ID/1.jpg`
+- 세 번째 썸네일: `https://img.youtube.com/vi/VIDEO_ID/2.jpg`
+- 네 번째 썸네일: `https://img.youtube.com/vi/VIDEO_ID/3.jpg`
+
+#### 2. 실제 사용 예시
+```markdown
+[![유튜브 썸네일](https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+```
+
+#### 3. 로컬 저장 방식
+1. 유튜브 썸네일을 다운로드
+2. `assets/images/` 폴더에 저장
+3. 상대 경로로 참조
+
+```markdown
+[![유튜브 썸네일]({{ site.baseurl }}/assets/images/youtube-thumbnail.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+```
+
+#### 4. 다양한 품질의 썸네일 예시
+![최고 품질](https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg)
+![고품질](https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg)
+![중간 품질](https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg)
+
 ---
 
 ## 코드 블록

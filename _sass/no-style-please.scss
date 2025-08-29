@@ -1,26 +1,57 @@
 // -------------- THEME SWITCHER -------------- //
 @mixin dark-appearance {
-  filter: invert(1);
+  // 배경색을 특정 색상으로 지정
+  html, body { 
+    background: #1a1a1a !important; // 다크 그레이 배경
+  }
+  
+  body {
+    color: #e0e0e0; // 밝은 회색 텍스트
+  }
+  
+  // 이미지는 반전하지 않음
   img {
-    filter: invert(1);
-
-    &.ioda { filter: invert(0); }
+    filter: none;
+    
+    &.ioda { filter: none; }
   }
-  .emoji { filter: invert(1); }
+  
+  // 이모지는 반전하지 않음
+  .emoji { 
+    filter: none; 
+  }
+  
+  // iframe은 반전하지 않음
   iframe {
-    filter: invert(1);
+    filter: none;
   }
 
-  // 다크 모드일 때 헤더를 제외한 주요 콘텐츠 영역의 링크 색상을 변경합니다.
+  // 링크 색상 지정
   main a:link,
   .w a:link {
-    filter: invert(1); // body의 색상 반전을 무효화합니다.
-    color: #30bf53; // 클릭 전 링크 색상 (선명한 녹색)
+    color: #4CAF50; // 밝은 녹색
   }
+  
   main a:visited,
   .w a:visited {
-    filter: invert(1); // body의 색상 반전을 무효화합니다.
-    color: #388359; // 클릭 후 링크 색상 (차분한 녹색)
+    color: #81C784; // 연한 녹색
+  }
+  
+  // 제목 색상
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+  }
+  
+  // 코드 블록 배경
+  pre, code {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+  
+  // 인용문 배경
+  blockquote {
+    background-color: #2d2d2d;
+    border-left-color: #4CAF50;
   }
 }
 

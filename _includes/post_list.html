@@ -12,9 +12,9 @@
   <ul style="margin-top: 1rem;">
     {%- for post in posts_source limit: list_config.limit -%}
     <li>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      -
       <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.theme_config.date_format }}</time>
+      |
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     </li>
     {%- endfor -%}
     {%- if list_config.show_more and posts_source.size > list_config.limit -%}

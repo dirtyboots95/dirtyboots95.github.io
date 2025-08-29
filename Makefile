@@ -37,7 +37,7 @@ new-journal:
 	fi; \
 	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
 	filename="_posts/journal/$$date-$$safe_title.md"; \
 	mkdir -p _posts/journal; \
 	if [ -f "_templates/journal_template.md" ]; then \
@@ -151,8 +151,13 @@ push-post:
 	read -p "커밋 메시지를 입력하세요: " commit_message; \
 	git add .; \
 	git commit -S -m "$$commit_message"; \
-	echo "🔄 원격 브랜치와 동기화 중..."; \
-	git pull origin $$current_branch --rebase || (echo "❌ 동기화 실패. 충돌을 해결한 후 다시 시도하세요."; exit 1); \
+	echo "🔄 원격 브랜치 확인 중..."; \
+	if git ls-remote --heads origin $$current_branch | grep -q $$current_branch; then \
+		echo "📥 원격 브랜치와 동기화 중..."; \
+		git pull origin $$current_branch --rebase || (echo "❌ 동기화 실패. 충돌을 해결한 후 다시 시도하세요."; exit 1); \
+	else \
+		echo "🆕 새로운 브랜치입니다. 동기화를 건너뜁니다."; \
+	fi; \
 	echo "🚀 원격에 푸시 중..."; \
 	git push origin $$current_branch || (echo "❌ 푸시 실패. 다시 시도하세요."; exit 1); \
 	echo "✅ 브랜치가 커밋되고 원격에 푸시되었습니다: $$current_branch"

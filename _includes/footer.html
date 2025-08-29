@@ -22,11 +22,32 @@
 
 <script>
   const themeToggle = document.getElementById('theme-toggle');
-  const currentTheme = localStorage.getItem('theme') || 'light';
-
-  // 초기 테마 설정
-  document.documentElement.setAttribute('data-theme', currentTheme);
-  updateToggleText();
+  
+  // 시스템 다크 모드 감지
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  
+  // 초기 테마 설정 (localStorage 우선, 없으면 시스템 설정)
+  function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = getSystemTheme();
+    const initialTheme = savedTheme || systemTheme;
+    
+    document.documentElement.setAttribute('data-theme', initialTheme);
+    updateToggleText();
+  }
+  
+  // 시스템 테마 변경 감지
+  function handleSystemThemeChange(e) {
+    const savedTheme = localStorage.getItem('theme');
+    // 사용자가 수동으로 설정한 테마가 없을 때만 시스템 설정 따름
+    if (!savedTheme) {
+      const newTheme = e.matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateToggleText();
+    }
+  }
 
   function updateToggleText() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -42,5 +63,12 @@
     updateToggleText();
   }
 
+  // 초기화
+  initializeTheme();
+  
+  // 시스템 테마 변경 감지 리스너
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleSystemThemeChange);
+  
+  // 클릭 이벤트
   themeToggle.addEventListener('click', switchTheme);
 </script>
