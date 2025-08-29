@@ -4,4 +4,23 @@ layout: default
 
 <h2>{{ page.title }}</h2>
 
-{%-include post_list.html category=page.which_category-%}
+{%- assign category_name = page.which_category -%}
+{%- if category_name -%}
+  {%- assign posts_source = site.categories[category_name] -%}
+{%- else -%}
+  {%- assign posts_source = site.posts -%}
+{%- endif -%}
+
+{%- if posts_source.size > 0 -%}
+  <ul>
+    {%- for post in posts_source reversed -%}
+    <li>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      -
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.theme_config.date_format }}</time>
+    </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+  <p style="color: #666; font-style: italic;">{{ site.theme_config.empty_posts_message | default: "아직 등록된 글이 없습니다." }}</p>
+{%- endif -%}

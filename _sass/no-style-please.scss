@@ -134,17 +134,17 @@ h1, h2, h3, h4, h5, h6 { margin-top: 2rem; }
 }
 
 // 메뉴 제목 링크는 클릭 여부에 관계없이 동일한 색상 유지
-h3 a,
-h3 a:visited,
-h3 a:link {
-  color: #0066cc !important;
+h2 a,
+h2 a:visited,
+h2 a:link {
+  color: #0033cc !important;
 }
 
 // back_link의 back_home_text도 클릭 여부에 관계없이 동일한 색상 유지
 a.back-link,
 a.back-link:visited,
 a.back-link:link {
-  color: #0066cc !important;
+  color: #0033cc !important;
 }
 
 hr { margin: 2rem 0; }

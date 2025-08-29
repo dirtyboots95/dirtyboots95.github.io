@@ -35,6 +35,7 @@ theme_config:
   back_home_text: "<-" # customize text for homepage link in post layout
   date_format: "%Y-%m-%d" # customize how date is formatted
   show_description: true # show blog description in home page
+  empty_posts_message: "아직 등록된 글이 없습니다." # message shown when no posts exist
 #  lowercase_titles: true # show titles in lowercase in lists
 
 # Comments provider
