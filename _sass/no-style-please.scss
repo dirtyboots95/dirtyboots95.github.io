@@ -15,20 +15,72 @@
   main a:link,
   .w a:link {
     filter: invert(1); // body의 색상 반전을 무효화합니다.
-    color: #50fa7b; // 클릭 전 링크 색상 (선명한 녹색)
+    color: #30bf53; // 클릭 전 링크 색상 (선명한 녹색)
   }
   main a:visited,
   .w a:visited {
     filter: invert(1); // body의 색상 반전을 무효화합니다.
-    color: #2e8b57; // 클릭 후 링크 색상 (차분한 녹색)
+    color: #388359; // 클릭 후 링크 색상 (차분한 녹색)
   }
 }
 
-body[a="dark"] { @include dark-appearance; }
+html[data-theme="dark"] { @include dark-appearance; }
 
+// Theme switcher styles
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  // margin: 1rem 0;
+}
 
-@media (prefers-color-scheme: dark) {
-  body[a="auto"] { @include dark-appearance; }
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 26px;
+}
+
+input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 // -------------------------------------------- //
 
@@ -42,29 +94,65 @@ html { height: 100%; scroll-behavior: smooth; }
 body {
   color: black;
   font-family: monospace;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.4;
   margin: 0;
-  min-height: 100%;
   overflow-wrap: break-word;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  width: 100%;
+}
+
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-meta { text-align: right; }
 
-h1, h2, h3, h4, h5, h6 { margin-top: 3rem; }
+h1, h2, h3, h4, h5, h6 { margin-top: 2rem; }
+
+// site-header 내의 h1은 위아래 마진을 동일하게 설정
+.site-header h1 {
+  margin: 1rem 0;
+}
+
+// 메뉴 제목 링크는 클릭 여부에 관계없이 동일한 색상 유지
+h3 a,
+h3 a:visited,
+h3 a:link {
+  color: #0066cc !important;
+}
+
+// back_link의 back_home_text도 클릭 여부에 관계없이 동일한 색상 유지
+a.back-link,
+a.back-link:visited,
+a.back-link:link {
+  color: #0066cc !important;
+}
 
 hr { margin: 2rem 0; }
 
 p { margin: 1rem 0; }
 
-li { margin: 0.4rem 0; }
+li { margin: 0.2rem 0; }
 
 *:target { background: yellow; }
 
 .w {
   max-width: 640px;
+  min-height: 100%;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
 }
 
 hr {
@@ -112,14 +200,21 @@ blockquote {
   background-image: url('/assets/images/header-background.png');
   background-size: cover;
   background-position: center;
-  padding: 4rem 2rem;
+  padding: 3rem 0;
   text-align: center;
+  width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .site-header a,
 .site-header p {
   color: white;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  padding: 0 2rem;
 }
 
 img {
@@ -127,3 +222,138 @@ img {
   display: block;
   margin: 0 auto;
 }
+
+// -------------- FOOTER STYLES -------------- //
+.site-footer {
+  /*
+    아래 url을 실제 이미지 경로로 변경할 수 있습니다.
+    이미지는 /assets/images/ 폴더에 넣는 것을 추천합니다.
+    예: url('/assets/images/footer-background.jpg')
+  */
+  background-image: url('/assets/images/footer-background.jpg');
+  background-size: cover;
+  background-position: center;
+  max-height: 280px;
+  padding: 2rem 0 1rem 0;
+  margin-top: auto;
+  border-top: 1px solid #ddd;
+  width: 640px;
+}
+
+.site-footer .w {
+  padding: 0 2rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.footer-section p,
+.footer-section li {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  margin: 0.2rem 0;
+  line-height: 1.2;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section a {
+  color: #30bf53;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-bottom p {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  margin: 0.2rem 0;
+  line-height: 1.2;
+}
+
+.footer-bottom a {
+  color: #30bf53;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+// 다크 모드에서 footer 스타일 조정
+html[data-theme="dark"] .site-footer {
+  .footer-section h3,
+  .footer-section p,
+  .footer-section li,
+  .footer-bottom p {
+    filter: invert(1);
+    text-shadow: none;
+  }
+  
+  .footer-section a,
+  .footer-bottom a {
+    filter: invert(1);
+    color: #30bf53;
+    text-shadow: none;
+  }
+}
+
+// Footer 내 테마 스위치 스타일 조정
+.site-footer .theme-switch-wrapper {
+  text-align: right;
+}
+
+.theme-toggle-text {
+  color: #30bf53;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  font-weight: bold;
+  // padding: 0.5rem 1rem;
+  // border: 1px solid #30bf53;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-text:hover {
+  background-color: #30bf53;
+  color: white;
+  text-shadow: none;
+}
+
+// 다크 모드에서 footer 내 테마 스위치 스타일 조정
+html[data-theme="dark"] .site-footer .theme-toggle-text {
+  filter: invert(1);
+  text-shadow: none;
+  border-color: #30bf53;
+}
+
+html[data-theme="dark"] .site-footer .theme-toggle-text:hover {
+  background-color: #30bf53;
+  color: white;
+  text-shadow: none;
+}
+// -------------------------------------------- //

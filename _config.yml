@@ -18,9 +18,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Daydream Ice Cream
+title: The Ice Cream Club
 email: dirtyboots9501@gmail.com
-description: "16년간 소프트웨어 엔지니어로 일하다, 이제는 아이스크림을 만드는 사람의 이야기"
+description: "아이스크림 개발자"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://dirtyboots95.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
@@ -32,7 +32,7 @@ permalink: /:slug.html
 theme: no-style-please
 theme_config:
   appearance: "auto" # can be "light", "dark" or "auto"
-  back_home_text: "<<" # customize text for homepage link in post layout
+  back_home_text: "<-" # customize text for homepage link in post layout
   date_format: "%Y-%m-%d" # customize how date is formatted
   show_description: true # show blog description in home page
 #  lowercase_titles: true # show titles in lowercase in lists

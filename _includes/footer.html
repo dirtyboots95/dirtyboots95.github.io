@@ -1,1 +1,46 @@
-Footer
+<footer class="site-footer">
+  <div class="w">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p>Email: contact@example.com</p>
+        <p>GitHub: <a href="https://github.com/dirtyboots95" target="_blank">dirtyboots95</a></p>
+      </div>
+      <div class="footer-section">
+        <div class="theme-switch-wrapper">
+          <span id="theme-toggle" class="theme-toggle-text">Dark</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 DirtyBoots95. All rights reserved.</p>
+      <p>Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const currentTheme = localStorage.getItem('theme') || 'light';
+
+  // 초기 테마 설정
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  updateToggleText();
+
+  function updateToggleText() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    themeToggle.textContent = currentTheme === 'dark' ? 'Light' : 'Dark';
+  }
+
+  function switchTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleText();
+  }
+
+  themeToggle.addEventListener('click', switchTheme);
+</script>

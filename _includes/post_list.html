@@ -17,8 +17,8 @@
       <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.theme_config.date_format }}</time>
     </li>
     {%- endfor -%}
+    {%- if list_config.show_more and posts_source.size > list_config.limit -%}
+    <li><a href="{{ list_config.show_more_url | relative_url }}">{{ list_config.show_more_text }}</a></li>
+    {%- endif -%}
   </ul>
-  {%- if list_config.show_more and posts_source.size > list_config.limit -%}
-  <p><a href="{{ list_config.show_more_url | relative_url }}">{{ list_config.show_more_text }}</a></p>
-  {%- endif -%}
 {%- endif -%}

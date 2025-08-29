@@ -1,13 +1,4 @@
 entries:
-  - title: About
-    url: /about.html
-    entries:
-      - title: 16년간 소프트웨어 엔지니어
-      - title: 이제 아이스크림을 만듭니다
-#      - title: github repo
-#        url: https://github.com/riggraz/no-style-please
-#      - title: "used by <a href='https://riggraz.dev'>riggraz.dev</a> and <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
-
   - title: Journal
     url: /journal.html
     post_list:
@@ -35,9 +26,20 @@ entries:
       show_more_text: 더 보기...
       show_more_url: movie.html
 
-  - title: Gallery
-    url: /gallery.html
-    gallery_preview: true
+  # - title: Gallery
+  #   url: /gallery.html
+  #   gallery_preview: true
 
   - title: Guestbook
     url: /guestbook.html
+    entries:
+      - title: 이름과 이메일을 입력하고 방명록을 남겨주세요. (이메일은 공개되지 않습니다)
+
+  # - title: About
+  #   url: /about.html
+  #   entries:
+  #     - title: 16년간 소프트웨어 엔지니어
+  #     - title: 이제 아이스크림을 만듭니다
+#      - title: github repo
+#        url: https://github.com/riggraz/no-style-please
+#      - title: "used by <a href='https://riggraz.dev'>riggraz.dev</a> and <a href='https://github.com/riggraz/no-style-please/network/dependents'>many others</a>"
