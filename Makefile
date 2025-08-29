@@ -16,15 +16,25 @@ clean:
 
 # 새 게시물 생성 (대화형)
 new-post:
-	@read -p "브랜치 이름을 입력하세요 (예: feature/new-post): " branch_name; \
-	git checkout -b $$branch_name; \
+	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
+	if [ -n "$$branch_name" ]; then \
+		git checkout -b $$branch_name; \
+		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
+	fi; \
 	ruby create_post.rb; \
-	echo "✅ 게시물이 생성되었습니다. 브랜치를 푸시하려면 'make push-feature'를 실행하세요."
+	if [ -n "$$branch_name" ]; then \
+		echo "✅ 게시물이 생성되었습니다. 브랜치를 푸시하려면 'make push-feature'를 실행하세요."; \
+	else \
+		echo "✅ 게시물이 생성되었습니다."; \
+	fi
 
 # 새 journal 게시물 생성
 new-journal:
-	@read -p "브랜치 이름을 입력하세요 (예: feature/journal-post): " branch_name; \
-	git checkout -b $$branch_name; \
+	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
+	if [ -n "$$branch_name" ]; then \
+		git checkout -b $$branch_name; \
+		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
+	fi; \
 	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
@@ -47,13 +57,20 @@ new-journal:
 	fi; \
 	git add $$filename; \
 	git commit -m "Add journal post: $$title"; \
-	git push origin $$branch_name; \
-	echo "✅ Journal 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
+	if [ -n "$$branch_name" ]; then \
+		git push origin $$branch_name; \
+		echo "✅ Journal 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
+	else \
+		echo "✅ Journal 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
+	fi
 
 # 새 book 게시물 생성
 new-book:
-	@read -p "브랜치 이름을 입력하세요 (예: feature/book-review): " branch_name; \
-	git checkout -b $$branch_name; \
+	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
+	if [ -n "$$branch_name" ]; then \
+		git checkout -b $$branch_name; \
+		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
+	fi; \
 	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
@@ -76,13 +93,20 @@ new-book:
 	fi; \
 	git add $$filename; \
 	git commit -m "Add book review: $$title"; \
-	git push origin $$branch_name; \
-	echo "✅ Book 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
+	if [ -n "$$branch_name" ]; then \
+		git push origin $$branch_name; \
+		echo "✅ Book 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
+	else \
+		echo "✅ Book 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
+	fi
 
 # 새 movie 게시물 생성
 new-movie:
-	@read -p "브랜치 이름을 입력하세요 (예: feature/movie-review): " branch_name; \
-	git checkout -b $$branch_name; \
+	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
+	if [ -n "$$branch_name" ]; then \
+		git checkout -b $$branch_name; \
+		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
+	fi; \
 	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
@@ -105,23 +129,30 @@ new-movie:
 	fi; \
 	git add $$filename; \
 	git commit -m "Add movie review: $$title"; \
-	git push origin $$branch_name; \
-	echo "✅ Movie 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"
+	if [ -n "$$branch_name" ]; then \
+		git push origin $$branch_name; \
+		echo "✅ Movie 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
+	else \
+		echo "✅ Movie 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
+	fi
 
 # 브랜치 보호를 위한 명령어들
-.PHONY: new-branch push-feature create-pr protect-main
+.PHONY: new-branch push-post create-pr protect-main
 
 # 새로운 기능 브랜치 생성
 new-branch:
-	@read -p "브랜치 이름을 입력하세요 (예: feature/new-post): " branch_name; \
+	@read -p "브랜치 이름을 입력하세요 (예: post/new-post): " branch_name; \
 	git checkout -b $$branch_name; \
 	echo "✅ 새로운 브랜치가 생성되었습니다: $$branch_name"
 
-# 현재 브랜치를 원격에 푸시
-push-feature:
+# 현재 브랜치를 커밋하고 원격에 푸시
+push-post:
 	@current_branch=$$(git branch --show-current); \
+	read -p "커밋 메시지를 입력하세요: " commit_message; \
+	git add .; \
+	git commit -m "$$commit_message"; \
 	git push origin $$current_branch; \
-	echo "✅ 브랜치가 원격에 푸시되었습니다: $$current_branch"
+	echo "✅ 브랜치가 커밋되고 원격에 푸시되었습니다: $$current_branch"
 
 # Pull Request 생성 (GitHub CLI 필요)
 create-pr:

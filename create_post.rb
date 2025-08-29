@@ -100,12 +100,6 @@ def create_post
   puts "📝 카테고리: #{category}"
   puts "📅 날짜: #{date.strftime('%Y-%m-%d')}"
   puts "🔗 편집 명령어: code #{filepath}"
-  
-  # 에디터로 열기 (선택사항)
-  puts "\n에디터로 파일을 열까요? (y/n):"
-  if gets.chomp.downcase == 'y'
-    system("code #{filepath}")
-  end
 end
 
 if __FILE__ == $0
