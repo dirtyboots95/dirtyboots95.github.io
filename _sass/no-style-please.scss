@@ -116,6 +116,12 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: center;
+}
+
+.page-content > p:last-child {
+  margin-top: auto;
+  margin-bottom: 2rem;
 }
 
 .post-meta { text-align: right; }
@@ -151,7 +157,7 @@ li { margin: 0.2rem 0; }
 
 .w {
   width: 640px;
-  min-height: 100%;
+  height: 100%;
   margin: 0 auto;
   padding-bottom: 2rem;
   padding-left: 2rem;
@@ -160,15 +166,11 @@ li { margin: 0.2rem 0; }
   flex-direction: column;
 }
 
-.w > p:last-child {
-  margin-top: auto;
-  margin-bottom: 0;
-}
-
 // 모바일 반응형
 @media (max-width: 680px) {
   .w {
     width: 100%;
+    height: 100%;
     padding: 1rem 1rem;
   }
   
