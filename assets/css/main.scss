@@ -7,9 +7,8 @@
 .center-image {
   display: block;
   margin: 2rem auto;
-  max-width: 100%;
+  max-width: 70%;
   height: auto;
-  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -17,7 +16,6 @@
   display: inline-block;
   width: 30%;
   margin: 0.5rem;
-  border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   vertical-align: top;
 }
@@ -27,7 +25,6 @@
   margin: 1rem auto;
   max-width: 300px;
   height: auto;
-  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -36,7 +33,6 @@
   margin: 1rem auto;
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -45,7 +41,6 @@
   margin: 1rem auto;
   max-width: 250px;
   height: auto;
-  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -54,7 +49,6 @@
   margin: 1rem auto;
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -76,6 +70,69 @@
     width: 100%;
     margin: 0.5rem 0;
   }
+}
+
+// 반응형 비디오 컨테이너
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+  margin: 2rem 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+// 비디오 썸네일 스타일
+.video-thumbnail {
+  position: relative;
+  display: inline-block;
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-thumbnail:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.video-thumbnail img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.video-thumbnail .play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 0, 0, 0.9);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.video-thumbnail:hover .play-button {
+  background-color: rgba(255, 0, 0, 1);
 }
 
 // emoji 밑줄 제거

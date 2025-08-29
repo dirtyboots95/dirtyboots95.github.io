@@ -37,7 +37,7 @@ new-journal:
 	fi; \
 	read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
 	filename="_posts/journal/$$date-$$safe_title.md"; \
 	mkdir -p _posts/journal; \
 	if [ -f "_templates/journal_template.md" ]; then \
