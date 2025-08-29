@@ -7,6 +7,11 @@ comments: true
 published: true
 # draft: true
 # hidden: true
+# SEO Settings
+description: "영화 제목에 대한 개인적인 리뷰와 감상평을 공유합니다"
+keywords: ["영화 리뷰", "영화 제목", "감독명", "영화 후기", "영화 평점"]
+image: "/assets/images/movies/영화제목-포스터.jpg"
+last_modified_at: YYYY-MM-DD
 ---
 
 ## 🎬 영화 정보

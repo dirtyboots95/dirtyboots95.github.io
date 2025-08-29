@@ -7,6 +7,11 @@ comments: true
 published: true
 # draft: true
 # hidden: true
+# SEO Settings
+description: "책 제목에 대한 개인적인 리뷰와 감상평을 공유합니다"
+keywords: ["책 리뷰", "독서", "책 제목", "저자명", "독서 후기"]
+image: "/assets/images/books/책제목-표지.jpg"
+last_modified_at: YYYY-MM-DD
 ---
 
 ## 📚 책 정보

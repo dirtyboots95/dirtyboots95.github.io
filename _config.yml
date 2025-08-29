@@ -23,8 +23,16 @@ email: dirtyboots9501@gmail.com
 description: "아이스크림 개발자"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://dirtyboots95.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+author: "dirtyboots95"
+keywords: ["개발", "프로그래밍", "독서", "영화", "리뷰", "블로그", "기술"]
 #twitter_username: jekyllrb
 #github_username:  jekyll
+
+# SEO Settings
+google_analytics: "" # Google Analytics ID (예: G-XXXXXXXXXX)
+google_site_verification: "google-site-verification=h8-gRgipLXTKv4m7h7n1fVAji9jWYSJJSSQFnGDk68I" # Google Search Console verification code
+naver_site_verification: "" # Naver Search Advisor verification code
+favicon: "/assets/images/favicon.ico"
 
 permalink: /:slug.html
 

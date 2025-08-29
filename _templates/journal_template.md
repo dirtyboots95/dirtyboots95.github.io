@@ -7,6 +7,11 @@ comments: true
 published: true
 # draft: true
 # hidden: true
+# SEO Settings
+description: "게시물에 대한 간단한 설명을 여기에 작성합니다 (150자 이내)"
+keywords: ["키워드1", "키워드2", "키워드3"]
+image: "/assets/images/journal/YYYY-MM-DD-사진명.jpg"
+last_modified_at: YYYY-MM-DD
 ---
 
 ## 오늘의 기록
