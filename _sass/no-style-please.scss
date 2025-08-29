@@ -115,6 +115,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .post-meta { text-align: right; }
@@ -149,10 +150,32 @@ li { margin: 0.2rem 0; }
 *:target { background: yellow; }
 
 .w {
-  max-width: 640px;
+  width: 640px;
   min-height: 100%;
   margin: 0 auto;
-  padding: 2rem 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.w > p:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+// 모바일 반응형
+@media (max-width: 680px) {
+  .w {
+    width: 100%;
+    padding: 1rem 1rem;
+  }
+  
+  .w > p:last-child {
+    margin-top: auto;
+    margin-bottom: 0;
+  }
 }
 
 hr {
@@ -210,6 +233,14 @@ blockquote {
   align-items: center;
 }
 
+// 모바일 반응형
+@media (max-width: 680px) {
+  .site-header {
+    width: 100%;
+    padding: 2rem 0;
+  }
+}
+
 .site-header a,
 .site-header p {
   color: white;
@@ -240,8 +271,26 @@ img {
   width: 640px;
 }
 
+// 모바일 반응형
+@media (max-width: 680px) {
+  .site-footer {
+    width: 100%;
+    padding: 1rem 0 0.5rem 0;
+  }
+  
+  .footer-content {
+    padding: 0 1rem;
+  }
+  
+  .footer-bottom {
+    padding: 1rem 1rem 0 1rem;
+  }
+}
+
 .site-footer .w {
-  padding: 0 2rem;
+  padding: 0;
+  width: 100%;
+  max-width: none;
 }
 
 .footer-content {
@@ -249,6 +298,7 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
+  padding: 0 2rem;
 }
 
 .footer-section h3 {
@@ -284,7 +334,7 @@ img {
 
 .footer-bottom {
   text-align: center;
-  padding-top: 1rem;
+  padding: 1rem 2rem 0 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 

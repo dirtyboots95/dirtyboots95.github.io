@@ -1,5 +1,5 @@
 ---
-layout: gallery
+layout: gallery_item
 title: "아름다운 석양"
 date: 2024-01-15
 image: /assets/images/gallery/sunset.avif

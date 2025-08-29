@@ -3,9 +3,12 @@
   {%- include head.html -%}
   <body a="{{ site.theme_config.appearance }}">
     <div class="page-wrapper">
+      {%- include site_header.html -%}
+      
       <main class="page-content" aria-label="Content">
         <div class="w">
           {{ content }}
+          <p>{%- include back_link.html -%}</p>
         </div>
       </main>
 

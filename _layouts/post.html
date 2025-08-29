@@ -3,8 +3,6 @@ layout: default
 comments: true
 ---
 
-{%- include site_header.html -%}
-
 <article>
   <p class="post-meta">
     <time datetime="{{ page.date }}">{{ page.date | date: site.theme_config.date_format }}</time>
@@ -16,5 +14,3 @@ comments: true
 </article>
 
 {%- include disqus_comments.html -%}
-
-{%-include back_link.html-%}

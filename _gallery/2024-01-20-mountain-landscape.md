@@ -1,5 +1,5 @@
 ---
-layout: gallery
+layout: gallery_item
 title: "산맥의 풍경"
 date: 2024-01-20
 image: /assets/images/gallery/midnight.avif

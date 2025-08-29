@@ -1,5 +1,5 @@
 ---
-layout: gallery
+layout: gallery_item
 title: "도시의 밤"
 date: 2024-01-25
 image: /assets/images/gallery/dawn.avif

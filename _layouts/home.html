@@ -1,46 +1,38 @@
 ---
 layout: default
 ---
-<header class="site-header">
-  <h1>{{ site.title }}</h1>
-  {%-if site.theme_config.show_description-%}
-    <p>{{ site.description }}</p>
-  {%-endif-%}
-</header>
 
-<main>
-  {%- for item in site.data.menu.entries -%}
-    <div>
-      <h3><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h3>
+{%- for item in site.data.menu.entries -%}
+  <div>
+    <h2><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h2>
 
-      {%- if item.entries -%}
-        <ul>
-          {%- for sub_item in item.entries -%}
-            <li>
-              {%- if sub_item.url -%}
-                <a href="{{ sub_item.url }}" target="_blank" rel="noopener">{{ sub_item.title }}</a>
-              {%- else -%}
-                {{ sub_item.title }}
-              {%- endif -%}
-            </li>
-          {%- endfor -%}
-        </ul>
+    {%- if item.entries -%}
+      <ul>
+        {%- for sub_item in item.entries -%}
+          <li>
+            {%- if sub_item.url -%}
+              <a href="{{ sub_item.url }}" target="_blank" rel="noopener">{{ sub_item.title }}</a>
+            {%- else -%}
+              {{ sub_item.title }}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if item.post_list -%}
+      {%- include post_list.html post_list=item.post_list -%}
+    {%- endif -%}
+
+    {%- if item.gallery_preview -%}
+      {%- assign latest_gallery_item = site.gallery | last -%}
+      {%- if latest_gallery_item -%}
+        <a href="{{ latest_gallery_item.url | relative_url }}" style="display: block; margin-top: 1rem;">
+          <img src="{{ latest_gallery_item.image | relative_url }}" alt="{{ latest_gallery_item.title }}">
+        </a>
       {%- endif -%}
-
-      {%- if item.post_list -%}
-        {%- include post_list.html post_list=item.post_list -%}
-      {%- endif -%}
-
-      {%- if item.gallery_preview -%}
-        {%- assign latest_gallery_item = site.gallery | last -%}
-        {%- if latest_gallery_item -%}
-          <a href="{{ latest_gallery_item.url | relative_url }}" style="display: block; margin-top: 1rem;">
-            <img src="{{ latest_gallery_item.image | relative_url }}" alt="{{ latest_gallery_item.title }}">
-          </a>
-        {%- endif -%}
-      {%- endif -%}
-    </div>
-  {%- endfor -%}
-</main>
+    {%- endif -%}
+  </div>
+{%- endfor -%}
 
 {{ content }}
