@@ -158,8 +158,18 @@ push-post:
 create-pr:
 	@read -p "PR 제목을 입력하세요: " pr_title; \
 	read -p "PR 설명을 입력하세요: " pr_description; \
+	current_branch=$$(git branch --show-current); \
+	git pull origin $$current_branch --rebase; \
+	git push origin $$current_branch; \
 	gh pr create --title "$$pr_title" --body "$$pr_description" --base main; \
 	echo "✅ Pull Request가 생성되었습니다"
+
+# Pull Request 자동 승인 및 머지 (GitHub CLI 필요)
+approve-pr:
+	@read -p "PR 번호를 입력하세요: " pr_number; \
+	gh pr review $$pr_number --approve; \
+	gh pr merge $$pr_number --merge; \
+	echo "✅ Pull Request가 승인되고 머지되었습니다: #$$pr_number"
 
 # main 브랜치 보호 설정 (로컬)
 protect-main:
