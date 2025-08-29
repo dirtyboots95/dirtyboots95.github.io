@@ -56,7 +56,7 @@ new-journal:
 		echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
 	git add $$filename; \
-	git commit -m "Add journal post: $$title"; \
+	git commit -S -m "Add journal post: $$title"; \
 	if [ -n "$$branch_name" ]; then \
 		git push origin $$branch_name; \
 		echo "✅ Journal 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
@@ -92,7 +92,7 @@ new-book:
 		echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
 	git add $$filename; \
-	git commit -m "Add book review: $$title"; \
+	git commit -S -m "Add book review: $$title"; \
 	if [ -n "$$branch_name" ]; then \
 		git push origin $$branch_name; \
 		echo "✅ Book 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
@@ -128,7 +128,7 @@ new-movie:
 		echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
 	git add $$filename; \
-	git commit -m "Add movie review: $$title"; \
+	git commit -S -m "Add movie review: $$title"; \
 	if [ -n "$$branch_name" ]; then \
 		git push origin $$branch_name; \
 		echo "✅ Movie 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
@@ -150,7 +150,7 @@ push-post:
 	@current_branch=$$(git branch --show-current); \
 	read -p "커밋 메시지를 입력하세요: " commit_message; \
 	git add .; \
-	git commit -m "$$commit_message"; \
+	git commit -S -m "$$commit_message"; \
 	echo "🔄 원격 브랜치와 동기화 중..."; \
 	git pull origin $$current_branch --rebase || (echo "❌ 동기화 실패. 충돌을 해결한 후 다시 시도하세요."; exit 1); \
 	echo "🚀 원격에 푸시 중..."; \
@@ -184,9 +184,8 @@ create-and-merge-pr:
 	pr_url=$$(gh pr create --title "$$pr_title" --body "$$pr_description" --base main); \
 	echo "✅ Pull Request가 생성되었습니다: $$pr_url"; \
 	pr_number=$$(echo $$pr_url | sed 's/.*\/pull\///'); \
-	gh pr review $$pr_number --approve; \
 	gh pr merge $$pr_number --merge; \
-	echo "✅ Pull Request가 승인되고 머지되었습니다: #$$pr_number"
+	echo "✅ Pull Request가 머지되었습니다: #$$pr_number"
 
 # main 브랜치 보호 설정 (로컬)
 protect-main:
