@@ -174,6 +174,20 @@ approve-pr:
 	gh pr merge $$pr_number --merge; \
 	echo "✅ Pull Request가 승인되고 머지되었습니다: #$$pr_number"
 
+# PR 생성 후 자동 머지 (GitHub CLI 필요)
+create-and-merge-pr:
+	@read -p "PR 제목을 입력하세요: " pr_title; \
+	read -p "PR 설명을 입력하세요: " pr_description; \
+	current_branch=$$(git branch --show-current); \
+	git pull origin $$current_branch --rebase || (echo "❌ 동기화 실패. 충돌을 해결한 후 다시 시도하세요."; exit 1); \
+	git push origin $$current_branch || (echo "❌ 푸시 실패. 다시 시도하세요."; exit 1); \
+	pr_url=$$(gh pr create --title "$$pr_title" --body "$$pr_description" --base main); \
+	echo "✅ Pull Request가 생성되었습니다: $$pr_url"; \
+	pr_number=$$(echo $$pr_url | sed 's/.*\/pull\///'); \
+	gh pr review $$pr_number --approve; \
+	gh pr merge $$pr_number --merge; \
+	echo "✅ Pull Request가 승인되고 머지되었습니다: #$$pr_number"
+
 # main 브랜치 보호 설정 (로컬)
 protect-main:
 	@echo "🔒 main 브랜치 보호 설정을 시작합니다..."; \
