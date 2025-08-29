@@ -22,7 +22,7 @@ new-post:
 new-journal:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/journal/$$date-$$safe_title.md"; \
 	mkdir -p _posts/journal; \
 	if [ -f "_templates/journal_template.md" ]; then \
@@ -46,7 +46,7 @@ new-journal:
 new-book:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/book/$$date-$$safe_title.md"; \
 	mkdir -p _posts/book; \
 	if [ -f "_templates/book_template.md" ]; then \
@@ -70,7 +70,7 @@ new-book:
 new-movie:
 	@read -p "제목을 입력하세요: " title; \
 	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g'); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/movie/$$date-$$safe_title.md"; \
 	mkdir -p _posts/movie; \
 	if [ -f "_templates/movie_template.md" ]; then \
