@@ -1,0 +1,9 @@
+{% comment %}
+  Plausible Analytics 추적 코드 (프라이버시 친화적)
+  사용법: {% include plausible_analytics.html %}
+  참고: https://plausible.io/
+{% endcomment %}
+
+{% if site.analytics.plausible.domain and jekyll.environment == "production" %}
+<script defer data-domain="{{ site.analytics.plausible.domain }}" src="https://plausible.io/js/script.js"></script>
+{% endif %}

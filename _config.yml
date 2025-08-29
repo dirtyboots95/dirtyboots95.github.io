@@ -48,6 +48,20 @@ theme_config:
 # Comments provider
 disqus_shortname: dirtyboots95
 
+# Web Analytics Settings
+analytics:
+  google:
+    id: "G-H9LCES4944" # Google Analytics 4 Measurement ID
+  goatcounter:
+    id: "dirtyboots95"
+  plausible:
+    domain: "dirtyboots95.github.io" # Plausible Analytics 도메인
+goat_counter: "dirtyboots95"
+
+# Page views settings
+pageviews:
+  provider: goatcounter # now only supports 'goatcounter'
+
 sass:
   style: compressed
 

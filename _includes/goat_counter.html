@@ -1,5 +1,66 @@
 <script data-goatcounter="https://{{ site.goat_counter }}.goatcounter.com/count"
+        data-goatcounter-settings='{"no_onload": true}'
         async src="//gc.zgo.at/count.js"></script>
+
+<!-- 페이지별 조회수 표시를 위한 스크립트 -->
+<script>
+  // 세션 기반 방문자 추적
+  function trackUniqueVisit() {
+    const sessionKey = 'visited_' + window.location.pathname;
+    const hasVisited = sessionStorage.getItem(sessionKey);
+    
+    if (!hasVisited) {
+      // 세션에서 방문하지 않은 경우에만 카운팅
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          path: window.location.pathname,
+          title: document.title
+        });
+      }
+      sessionStorage.setItem(sessionKey, 'true');
+    }
+  }
+  
+  // Goat Counter API를 사용하여 페이지별 조회수 가져오기
+  async function loadPageViews() {
+    const pageviewElements = document.querySelectorAll('[data-goatcounter-url]');
+    
+    for (const element of pageviewElements) {
+      const url = element.getAttribute('data-goatcounter-url');
+      const path = new URL(url).pathname;
+      
+      try {
+        // Goat Counter API 호출
+        const response = await fetch(`https://{{ site.goat_counter }}.goatcounter.com/api/v0/stats/path?path=${encodeURIComponent(path)}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.stats && data.stats.length > 0) {
+            const pageViews = data.stats[0].count;
+            element.textContent = pageViews.toLocaleString();
+          } else {
+            element.textContent = '0';
+          }
+        } else {
+          element.textContent = '📊';
+        }
+      } catch (error) {
+        // CORS 이슈나 네트워크 오류 시 기본 표시
+        element.textContent = '📊';
+      }
+    }
+  }
+  
+  // 페이지 로드 후 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      trackUniqueVisit();
+      loadPageViews();
+    });
+  } else {
+    trackUniqueVisit();
+    loadPageViews();
+  }
+</script>
 
 <noscript>
   <img src="https://{{ site.goat_counter }}.goatcounter.com/count?p=/test-img">
