@@ -29,7 +29,6 @@ keywords: ["개발", "프로그래밍", "독서", "영화", "리뷰", "블로그
 #github_username:  jekyll
 
 # SEO Settings
-google_analytics: "" # Google Analytics ID (예: G-XXXXXXXXXX)
 google_site_verification: "google-site-verification=h8-gRgipLXTKv4m7h7n1fVAji9jWYSJJSSQFnGDk68I" # Google Search Console verification code
 naver_site_verification: "" # Naver Search Advisor verification code
 favicon: "/assets/images/favicon.ico"

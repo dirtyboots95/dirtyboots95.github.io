@@ -47,10 +47,11 @@
 3. HTML 태그 방식으로 인증 코드 확인
 4. `_config.yml`의 `naver_site_verification`에 코드 입력
 
-### 3. Google Analytics 설정
+### 3. Google Analytics 설정 (선택사항)
 1. [Google Analytics](https://analytics.google.com/)에서 계정 생성
 2. 측정 ID 확인 (G-XXXXXXXXXX 형식)
 3. `_config.yml`의 `google_analytics`에 ID 입력
+4. **참고**: Google Analytics는 SEO와는 별개로 방문자 분석을 위한 도구입니다
 
 ### 4. OG 이미지 설정
 - 기본 OG 이미지 파일을 `assets/images/og-image.jpg`에 추가
