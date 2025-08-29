@@ -151,7 +151,10 @@ push-post:
 	read -p "커밋 메시지를 입력하세요: " commit_message; \
 	git add .; \
 	git commit -m "$$commit_message"; \
-	git push origin $$current_branch; \
+	echo "🔄 원격 브랜치와 동기화 중..."; \
+	git pull origin $$current_branch --rebase || (echo "❌ 동기화 실패. 충돌을 해결한 후 다시 시도하세요."; exit 1); \
+	echo "🚀 원격에 푸시 중..."; \
+	git push origin $$current_branch || (echo "❌ 푸시 실패. 다시 시도하세요."; exit 1); \
 	echo "✅ 브랜치가 커밋되고 원격에 푸시되었습니다: $$current_branch"
 
 # Pull Request 생성 (GitHub CLI 필요)
