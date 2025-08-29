@@ -39,7 +39,6 @@ new-journal:
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
 	filename="_posts/journal/$$date-$$safe_title.md"; \
-	mkdir -p _posts/journal; \
 	if [ -f "_templates/journal_template.md" ]; then \
 		cp "_templates/journal_template.md" $$filename; \
 		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
@@ -51,10 +50,19 @@ new-journal:
 		echo "date: $$date 10:00:00 +0900" >> $$filename; \
 		echo "category: journal" >> $$filename; \
 		echo "comments: true" >> $$filename; \
+		echo "published: true" >> $$filename; \
+		echo "description: \"게시물 설명 (150자 이내)\"" >> $$filename; \
+		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
+		echo "image: \"/assets/images/journal/$$date-$$safe_title.jpg\"" >> $$filename; \
+		echo "last_modified_at: $$date" >> $$filename; \
 		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "![오늘의 사진]({{ site.baseurl }}/assets/images/journal/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
 		echo "" >> $$filename; \
 		echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
+	echo "📝 이미지 파일을 assets/images/journal/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
+	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
 	git add $$filename; \
 	git commit -S -m "Add journal post: $$title"; \
 	if [ -n "$$branch_name" ]; then \
@@ -75,7 +83,6 @@ new-book:
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/book/$$date-$$safe_title.md"; \
-	mkdir -p _posts/book; \
 	if [ -f "_templates/book_template.md" ]; then \
 		cp "_templates/book_template.md" $$filename; \
 		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
@@ -87,10 +94,19 @@ new-book:
 		echo "date: $$date 10:00:00 +0900" >> $$filename; \
 		echo "category: book" >> $$filename; \
 		echo "comments: true" >> $$filename; \
+		echo "published: true" >> $$filename; \
+		echo "description: \"책 리뷰 설명 (150자 이내)\"" >> $$filename; \
+		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
+		echo "image: \"/assets/images/books/$$date-$$safe_title.jpg\"" >> $$filename; \
+		echo "last_modified_at: $$date" >> $$filename; \
 		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "![책 표지]({{ site.baseurl }}/assets/images/books/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
 		echo "" >> $$filename; \
 		echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
+	echo "📝 책 표지 이미지를 assets/images/books/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
+	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
 	git add $$filename; \
 	git commit -S -m "Add book review: $$title"; \
 	if [ -n "$$branch_name" ]; then \
@@ -111,7 +127,6 @@ new-movie:
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
 	filename="_posts/movie/$$date-$$safe_title.md"; \
-	mkdir -p _posts/movie; \
 	if [ -f "_templates/movie_template.md" ]; then \
 		cp "_templates/movie_template.md" $$filename; \
 		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
@@ -123,10 +138,19 @@ new-movie:
 		echo "date: $$date 10:00:00 +0900" >> $$filename; \
 		echo "category: movie" >> $$filename; \
 		echo "comments: true" >> $$filename; \
+		echo "published: true" >> $$filename; \
+		echo "description: \"영화 리뷰 설명 (150자 이내)\"" >> $$filename; \
+		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
+		echo "image: \"/assets/images/movies/$$date-$$safe_title.jpg\"" >> $$filename; \
+		echo "last_modified_at: $$date" >> $$filename; \
 		echo "---" >> $$filename; \
+		echo "" >> $$filename; \
+		echo "![영화 포스터]({{ site.baseurl }}/assets/images/movies/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
 		echo "" >> $$filename; \
 		echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
 	fi; \
+	echo "📝 영화 포스터 이미지를 assets/images/movies/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
+	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
 	git add $$filename; \
 	git commit -S -m "Add movie review: $$title"; \
 	if [ -n "$$branch_name" ]; then \
@@ -207,3 +231,21 @@ protect-main:
 	chmod +x .git/hooks/pre-push; \
 	echo "✅ main 브랜치 보호가 설정되었습니다!"; \
 	echo "💡 이제 main 브랜치에 직접 push할 수 없습니다."
+
+# 이미지 파일명 대소문자 정리
+fix-image-names:
+	@echo "🖼️ 이미지 파일명을 소문자로 정리합니다..."; \
+	find assets/images -name "*.JPG" -exec sh -c 'mv "$1" "${1%.JPG}.jpg"' _ {} \; 2>/dev/null || true; \
+	find assets/images -name "*.PNG" -exec sh -c 'mv "$1" "${1%.PNG}.png"' _ {} \; 2>/dev/null || true; \
+	find assets/images -name "*.JPEG" -exec sh -c 'mv "$1" "${1%.JPEG}.jpeg"' _ {} \; 2>/dev/null || true; \
+	echo "✅ 이미지 파일명이 소문자로 정리되었습니다."
+
+# 이미지 파일명 확인
+check-image-names:
+	@echo "🔍 대문자 확장자를 가진 이미지 파일을 찾습니다..."; \
+	find assets/images -name "*.JPG" -o -name "*.PNG" -o -name "*.JPEG" | head -10; \
+	if [ $$(find assets/images -name "*.JPG" -o -name "*.PNG" -o -name "*.JPEG" | wc -l) -eq 0 ]; then \
+		echo "✅ 모든 이미지 파일이 소문자 확장자를 사용합니다."; \
+	else \
+		echo "⚠️ 위 파일들의 확장자를 소문자로 변경하려면 'make fix-image-names'를 실행하세요."; \
+	fi
