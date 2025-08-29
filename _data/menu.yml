@@ -1,5 +1,5 @@
 entries:
-  - title: Journal
+  - title: 📝 Journal
     url: /journal.html
     post_list:
       category: journal
@@ -8,7 +8,7 @@ entries:
       show_more_text: 더 보기...
       show_more_url: journal.html
 
-  - title: Book
+  - title: 📚 Book
     url: /book.html
     post_list:
       category: book
@@ -17,7 +17,7 @@ entries:
       show_more_text: 더 보기...
       show_more_url: book.html
 
-  - title: Movie
+  - title: 🎬 Movie
     url: /movie.html
     post_list:
       category: movie
@@ -26,11 +26,11 @@ entries:
       show_more_text: 더 보기...
       show_more_url: movie.html
 
-  # - title: Gallery
+  # - title: 🖼️ Gallery
   #   url: /gallery.html
   #   gallery_preview: true
 
-  - title: Guestbook
+  - title: 💬 Guestbook
     url: /guestbook.html
     entries:
       - title: 이름과 이메일을 입력하고 방명록을 남겨주세요. (이메일은 공개되지 않습니다)

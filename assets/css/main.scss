@@ -77,3 +77,18 @@
     margin: 0.5rem 0;
   }
 }
+
+// emoji 밑줄 제거
+.menu-section h2 a {
+  text-decoration: none;
+}
+
+.menu-section h2 a:hover {
+  text-decoration: underline;
+}
+
+// emoji 부분에만 밑줄 제거
+.menu-section h2 a::before {
+  content: attr(data-emoji);
+  text-decoration: none;
+}
