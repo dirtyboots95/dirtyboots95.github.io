@@ -2,3 +2,78 @@
 ---
 
 @use "no-style-please";
+
+// 이미지 스타일
+.center-image {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.small-image {
+  display: inline-block;
+  width: 30%;
+  margin: 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  vertical-align: top;
+}
+
+.book-cover {
+  display: block;
+  margin: 1rem auto;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-page {
+  display: block;
+  margin: 1rem auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.movie-poster {
+  display: block;
+  margin: 1rem auto;
+  max-width: 250px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.movie-still {
+  display: block;
+  margin: 1rem auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// 반응형 이미지
+@media (max-width: 768px) {
+  .small-image {
+    width: 45%;
+    margin: 0.25rem;
+  }
+  
+  .book-cover,
+  .movie-poster {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .small-image {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
