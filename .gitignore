@@ -10,3 +10,9 @@ vendor
 *.pem
 *.key
 *.json
+
+# Node.js 의존성 (Git에 포함하지 않음)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
