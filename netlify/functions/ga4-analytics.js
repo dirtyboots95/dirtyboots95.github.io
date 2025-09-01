@@ -1,27 +1,38 @@
-// Vercel Functions용 Google Analytics Data API v1
+// Netlify Functions용 Google Analytics Data API v1
 // 방문자 통계를 가져오는 서버리스 함수
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 
-module.exports = async (req, res) => {
+exports.handler = async function(event, context) {
   // CORS 헤더 설정
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
 
   // OPTIONS 요청 처리 (CORS preflight)
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
   try {
-    const { property_id } = req.query || {};
+    const { property_id } = event.queryStringParameters || {};
     
     if (!property_id) {
-      return res.status(400).json({ 
-        error: 'property_id is required',
-        message: 'GA4 Property ID가 필요합니다.'
-      });
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ 
+          error: 'property_id is required',
+          message: 'GA4 Property ID가 필요합니다.'
+        })
+      };
     }
 
     // Google Analytics 클라이언트 초기화
@@ -87,20 +98,28 @@ module.exports = async (req, res) => {
       today_visitors: parseInt(todayVisitorsResponse.rows?.[0]?.metricValues?.[0]?.value || 0),
       total_pageviews: parseInt(totalPageviewsResponse.rows?.[0]?.metricValues?.[0]?.value || 0),
       last_updated: new Date().toISOString(),
-      source: 'GA4 Data API v1 (Vercel)'
+      source: 'GA4 Data API v1'
     };
 
-    return res.status(200).json(data);
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(data)
+    };
 
   } catch (error) {
     console.error('Analytics API Error:', error);
     
     // 에러 응답에 더 자세한 정보 포함
-    return res.status(500).json({ 
-      error: 'Failed to fetch analytics data',
-      message: '방문자 통계를 가져오는데 실패했습니다.',
-      details: error.message,
-      timestamp: new Date().toISOString()
-    });
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Failed to fetch analytics data',
+        message: '방문자 통계를 가져오는데 실패했습니다.',
+        details: error.message,
+        timestamp: new Date().toISOString()
+      })
+    };
   }
 };

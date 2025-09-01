@@ -1,0 +1,257 @@
+{% comment %}
+  간단한 방문자 카운터 (서버리스 함수 없음)
+  사용법: {% include simple_visitor_counter.html %}
+{% endcomment %}
+
+<div class="visitor-counter">
+  <div class="counter-bg-left"></div>
+  <div class="counter-bg-right"></div>
+  <div class="counter-text">
+    <span class="counter-label">hits</span>
+    <span class="counter-numbers">
+      <span id="today-visitors">0</span> / <span id="total-visitors">0</span>
+    </span>
+  </div>
+</div>
+
+<script>
+// GA4 설정
+const GA4_CONFIG = {
+  measurementId: '{{ site.analytics.google.id }}',
+  propertyId: '{{ site.analytics.google.property_id }}',
+  account: '{{ site.analytics.google.account }}'
+};
+
+// 디버깅을 위한 상세 로그
+function debugLog(message, type = 'info') {
+  const timestamp = new Date().toLocaleTimeString();
+  const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : '🔍';
+  console.log(`${prefix} [${timestamp}] ${message}`);
+}
+
+// 간단한 방문자 카운터 (서버리스 함수 없음)
+async function loadSimpleVisitorStats() {
+  try {
+    debugLog('방문자 통계 로드 시작');
+    debugLog(`GA4 설정: ${JSON.stringify(GA4_CONFIG)}`);
+    
+    // 설정 확인
+    if (!GA4_CONFIG.propertyId) {
+      throw new Error('GA4 Property ID가 설정되지 않았습니다.');
+    }
+    
+    // GA4 이벤트 기반 통계 로드
+    await loadGA4EventBasedStats();
+    
+  } catch (error) {
+    debugLog(`방문자 통계 로드 실패: ${error.message}`, 'error');
+    displayDefaultData();
+  }
+}
+
+// GA4 이벤트 기반 통계 (gtag 사용)
+async function loadGA4EventBasedStats() {
+  try {
+    debugLog('GA4 이벤트 기반 통계 로드 시작');
+    
+    // gtag가 로드될 때까지 대기
+    if (typeof gtag === 'undefined') {
+      debugLog('gtag가 아직 로드되지 않았습니다. 대기 중...');
+      await waitForGtag();
+    }
+    
+    // GA4 이벤트 전송 (페이지뷰 추적)
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      custom_parameter: 'visitor_counter'
+    });
+    
+    // 로컬 스토리지에서 방문자 통계 가져오기
+    const visitorStats = getVisitorStatsFromStorage();
+    
+    // 방문자 통계 표시
+    displayVisitorStats(visitorStats);
+    
+    // 새로운 방문자 추가 (중복 방지)
+    addNewVisitorIfNeeded();
+    
+  } catch (error) {
+    debugLog(`GA4 이벤트 기반 통계 실패: ${error.message}`, 'error');
+    throw error;
+  }
+}
+
+// gtag 로드 대기
+function waitForGtag() {
+  return new Promise((resolve) => {
+    if (typeof gtag !== 'undefined') {
+      resolve();
+      return;
+    }
+    
+    const checkInterval = setInterval(() => {
+      if (typeof gtag !== 'undefined') {
+        clearInterval(checkInterval);
+        resolve();
+      }
+    }, 100);
+    
+    // 최대 5초 대기
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      resolve();
+    }, 5000);
+  });
+}
+
+// 로컬 스토리지에서 방문자 통계 가져오기
+function getVisitorStatsFromStorage() {
+  const today = new Date().toDateString();
+  const storageKey = 'visitor_stats';
+  
+  let stats = JSON.parse(localStorage.getItem(storageKey) || '{}');
+  
+  // 오늘 날짜가 없으면 초기화
+  if (!stats[today]) {
+    stats[today] = {
+      total_visitors: 0,
+      today_visitors: 0,
+      total_pageviews: 0,
+      last_visit: null,
+      session_id: generateSessionId()
+    };
+  }
+  
+  return stats;
+}
+
+// 세션 ID 생성
+function generateSessionId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+// 새로운 방문자 추가 (중복 방지)
+function addNewVisitorIfNeeded() {
+  const today = new Date().toDateString();
+  const storageKey = 'visitor_stats';
+  
+  let stats = getVisitorStatsFromStorage();
+  const now = new Date();
+  const currentSessionId = stats[today].session_id;
+  
+  // 세션이 변경되었는지 확인 (새로운 브라우저 세션)
+  const isNewSession = !sessionStorage.getItem('visitor_session_id') || 
+                      sessionStorage.getItem('visitor_session_id') !== currentSessionId;
+  
+  if (isNewSession) {
+    // 새로운 세션 시작
+    sessionStorage.setItem('visitor_session_id', currentSessionId);
+    
+    // 오늘 첫 방문인지 확인 (24시간 기준)
+    const lastVisit = stats[today].last_visit ? new Date(stats[today].last_visit) : null;
+    const isFirstVisitToday = !lastVisit || 
+                             lastVisit.toDateString() !== today ||
+                             (now - lastVisit) > (24 * 60 * 60 * 1000); // 24시간
+    
+    if (isFirstVisitToday) {
+      stats[today].today_visitors++;
+      stats[today].total_visitors++;
+      debugLog('새로운 방문자 추가됨 (24시간 기준)', 'success');
+    }
+    
+    // 페이지뷰는 세션당 1회만 증가
+    stats[today].total_pageviews++;
+    debugLog('새로운 세션: 페이지뷰 증가', 'success');
+  } else {
+    // 같은 세션에서는 페이지뷰 증가하지 않음
+    debugLog('같은 세션: 페이지뷰 증가하지 않음', 'info');
+  }
+  
+  stats[today].last_visit = now.toISOString();
+  
+  // 로컬 스토리지에 저장
+  localStorage.setItem(storageKey, JSON.stringify(stats));
+  
+  // 화면 업데이트
+  displayVisitorStats(stats);
+  
+  debugLog(`방문자 통계 업데이트: ${JSON.stringify(stats[today])}`, 'success');
+}
+
+// 방문자 통계 표시
+function displayVisitorStats(stats) {
+  const today = new Date().toDateString();
+  const todayStats = stats[today] || { total_visitors: 0, today_visitors: 0, total_pageviews: 0 };
+  
+  document.getElementById('today-visitors').textContent = todayStats.today_visitors;
+  document.getElementById('total-visitors').textContent = todayStats.total_visitors;
+  
+  const counter = document.querySelector('.visitor-counter');
+  if (counter) {
+    counter.style.opacity = '1';
+    counter.title = `마지막 업데이트: ${new Date().toLocaleString('ko-KR')} (로컬 통계)`;
+  }
+  
+  debugLog('방문자 통계 표시 완료', 'success');
+}
+
+// 기본 데이터 표시 (API 실패 시)
+function displayDefaultData() {
+  document.getElementById('today-visitors').textContent = '0';
+  document.getElementById('total-visitors').textContent = '0';
+  
+  const counter = document.querySelector('.visitor-counter');
+  if (counter) {
+    counter.style.opacity = '0.6';
+    counter.title = '데이터를 불러올 수 없습니다.';
+  }
+  
+  debugLog('기본 표시 모드로 전환', 'error');
+}
+
+// 페이지 로드 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadSimpleVisitorStats);
+} else {
+  loadSimpleVisitorStats();
+}
+
+// 5분마다 데이터 새로고침
+setInterval(loadSimpleVisitorStats, 5 * 60 * 1000);
+
+// 로딩 상태 표시
+function showLoadingState() {
+  document.getElementById('today-visitors').textContent = '로딩 중...';
+  document.getElementById('total-visitors').textContent = '로딩 중...';
+  
+  const counter = document.querySelector('.visitor-counter');
+  if (counter) {
+    counter.style.opacity = '0.8';
+    counter.title = '방문자 통계 로딩 중...';
+  }
+}
+
+// 성공 상태 표시
+function showSuccessState() {
+  const counter = document.querySelector('.visitor-counter');
+  if (counter) {
+    counter.style.opacity = '1';
+    counter.title = `마지막 업데이트: ${new Date().toLocaleString('ko-KR')} (로컬 통계)`;
+  }
+}
+
+// 페이지 가시성 변경 시 방문자 추가 (중복 방지)
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden) {
+    debugLog('페이지 가시성 변경: 방문자 통계 업데이트');
+    addNewVisitorIfNeeded();
+  }
+});
+
+// 페이지 포커스 시 방문자 추가 (중복 방지)
+window.addEventListener('focus', function() {
+  debugLog('페이지 포커스: 방문자 통계 업데이트');
+  addNewVisitorIfNeeded();
+});
+</script>

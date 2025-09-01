@@ -1,6 +1,17 @@
-<script data-goatcounter="https://{{ site.goat_counter }}.goatcounter.com/count"
+<script>
+  var t = setInterval(function () {
+    if (window.goatcounter && window.goatcounter.visit_count) {
+      clearInterval(t)
+      window.goatcounter.visit_count({ append: 'body' })
+    }
+  }, 100)
+</script>
+<!-- <script data-goatcounter="https://dirtyboots95.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script> -->
+ <script data-goatcounter="https://{{ site.goat_counter }}.goatcounter.com/count"
         data-goatcounter-settings='{"no_onload": true}'
         async src="//gc.zgo.at/count.js"></script>
+
+      
 
 <!-- 페이지별 조회수 표시를 위한 스크립트 -->
 <script>

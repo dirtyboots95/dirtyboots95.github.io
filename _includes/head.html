@@ -35,7 +35,7 @@
   <meta name="google-site-verification" content="{{ site.google_site_verification }}" />
   {% endif %}
   {% if site.naver_site_verification %}
-  <meta name="naver-site-verification" content="{{ site.naver_site_verification }}" />
+  <meta name="naver_site_verification" content="{{ site.naver_site_verification }}" />
   {% endif %}
   
   <!-- Canonical URL -->
@@ -47,6 +47,18 @@
   {%-seo title=false-%}
   {%-feed_meta-%}
   <meta name="google-site-verification" content="h8-gRgipLXTKv4m7h7n1fVAji9jWYSJJSSQFnGDk68I" />
+  
+  <!-- Google Analytics 4 -->
+  {% if site.analytics.google.id %}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.google.id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.analytics.google.id }}');
+  </script>
+  {% endif %}
   
   <link rel="shortcut icon" type="image/x-icon" href="{{ site.favicon | relative_url }}" />
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}" />

@@ -147,52 +147,8 @@
   color: #4CAF50;
 }
 
-// 방문자 카운터 스타일
-.visitor-counter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 2rem 0;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.counter-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  min-width: 120px;
-}
-
-.counter-label {
-  font-size: 0.9em;
-  color: #666;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.counter-value {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #2c3e50;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-// 다크 테마 대응
-[data-theme="dark"] .visitor-counter {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-}
-
-[data-theme="dark"] .counter-value {
-  color: #ecf0f1;
-}
-
-[data-theme="dark"] .counter-label {
-  color: #bdc3c7;
-}
+// 방문자 카운터 스타일 (no-style-please.scss에서 관리)
+// .visitor-counter 관련 스타일은 _sass/no-style-please.scss에서 관리됩니다.
 
 // emoji 밑줄 제거
 .menu-section h2 a {

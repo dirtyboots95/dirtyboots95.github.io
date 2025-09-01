@@ -6,6 +6,10 @@
 serve:
 	bundle exec jekyll serve --livereload
 
+# Production 환경으로 로컬 실행
+serve-prod:
+	JEKYLL_ENV=production bundle exec jekyll serve
+
 # 사이트 빌드
 build:
 	bundle exec jekyll build

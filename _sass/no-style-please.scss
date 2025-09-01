@@ -1,3 +1,77 @@
+// -------------- VISITOR COUNTER -------------- //
+.visitor-counter-link {
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.visitor-counter {
+  position: relative;
+  display: block;
+  width: 65px;
+  height: 16px;
+  border-radius: 3px;
+  overflow: hidden;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 9px;
+  line-height: 16px;
+  text-align: center;
+  color: white;
+  margin: 1rem auto 0 auto;
+}
+
+.counter-bg-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 16px;
+  background-color: #555;
+  border-radius: 3px 0 0 3px;
+}
+
+.counter-bg-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 16px;
+  background-color: #007ec6;
+  border-radius: 0 3px 3px 0;
+}
+
+.counter-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 6px;
+}
+
+.counter-label {
+  font-weight: normal;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.counter-numbers {
+  font-weight: normal;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+// 다크 테마에서 방문자 카운터 스타일
+html[data-theme="dark"] .visitor-counter .counter-left {
+  background-color: #4c4c4c;
+}
+
+html[data-theme="dark"] .visitor-counter .counter-right {
+  background-color: #2d89ef;
+}
+
 // -------------- THEME SWITCHER -------------- //
 @mixin dark-appearance {
   // 배경색을 특정 색상으로 지정

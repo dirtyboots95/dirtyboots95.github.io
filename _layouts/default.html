@@ -39,15 +39,8 @@
         {%- endunless -%}
       </div>
     </main>
-    <a href="https://myhits.vercel.app" style="margin-bottom: 1rem;">
-      <img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Fdirtyboots95.github.io%2F?color=blue&label=hits&size=small" alt="hits" />
-    </a>
     {%- include footer.html -%}
   </div>
-
-  {%-if site.goat_counter and jekyll.environment == "production"-%}
-  {%-include goat_counter.html-%}
-  {%-endif-%}
 
   {% if page.custom_js %}
   {% for js_file in page.custom_js %}
