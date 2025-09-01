@@ -249,3 +249,40 @@ check-image-names:
 	else \
 		echo "⚠️ 위 파일들의 확장자를 소문자로 변경하려면 'make fix-image-names'를 실행하세요."; \
 	fi
+
+# Google Analytics 4 설정 및 테스트
+.PHONY: setup-ga4 test-ga4 install-deps
+
+# GA4 환경 변수 설정
+setup-ga4:
+	@echo "🔧 Google Analytics 4 환경 변수 설정 중..."; \
+	if [ -f ".secrets/ga4-service-account.json" ]; then \
+		export GOOGLE_APPLICATION_CREDENTIALS="$$(pwd)/.secrets/ga4-service-account.json"; \
+		export GA4_PROPERTY_ID="503083435"; \
+		export GA4_MEASUREMENT_ID="G-H9LCES4944"; \
+		export JEKYLL_ENV="production"; \
+		echo "✅ 환경 변수 설정 완료!"; \
+		echo "💡 이제 'make test-ga4'로 API를 테스트할 수 있습니다."; \
+	else \
+		echo "❌ .secrets/ga4-service-account.json 파일을 찾을 수 없습니다."; \
+		echo "💡 Google Cloud Console에서 서비스 계정 키 파일을 다운로드하고 .secrets/ 폴더에 저장하세요."; \
+	fi
+
+# GA4 API 테스트
+test-ga4:
+	@echo "🧪 Google Analytics 4 API 테스트 중..."; \
+	if [ -f "test_ga4_api.js" ]; then \
+		node test_ga4_api.js; \
+	else \
+		echo "❌ test_ga4_api.js 파일을 찾을 수 없습니다."; \
+	fi
+
+# Node.js 의존성 설치
+install-deps:
+	@echo "📦 Node.js 의존성 설치 중..."; \
+	if [ -f "package.json" ]; then \
+		npm install; \
+		echo "✅ 의존성 설치 완료!"; \
+	else \
+		echo "❌ package.json 파일을 찾을 수 없습니다."; \
+	fi

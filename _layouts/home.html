@@ -2,6 +2,9 @@
 layout: default
 ---
 
+<!-- 방문자 통계 카운터 -->
+{%- include visitor_counter.html -%}
+
 {%- for item in site.data.menu.entries -%}
   <div class="menu-section">
     <h2><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h2>

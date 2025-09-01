@@ -1,0 +1,165 @@
+{% comment %}
+  Google Analytics 방문자 통계 카운터
+  사용법: {% include visitor_counter.html %}
+{% endcomment %}
+
+{% if site.analytics.google.id and jekyll.environment == "production" %}
+<div class="visitor-counter">
+  <div class="counter-item">
+    <span class="counter-label">📊 총 방문자</span>
+    <span class="counter-value" id="total-visitors">로딩 중...</span>
+  </div>
+  <div class="counter-item">
+    <span class="counter-label">👥 오늘 방문자</span>
+    <span class="counter-value" id="today-visitors">로딩 중...</span>
+  </div>
+  <div class="counter-item">
+    <span class="counter-label">📈 총 페이지뷰</span>
+    <span class="counter-value" id="total-pageviews">로딩 중...</span>
+  </div>
+</div>
+
+<script>
+// Google Analytics 방문자 통계 가져오기
+async function loadVisitorStats() {
+  const measurementId = '{{ site.analytics.google.id }}';
+  
+  try {
+    // Google Analytics Data API v1을 사용하여 통계 가져오기
+    // 참고: 실제 구현에서는 서버 사이드에서 처리하는 것이 좋습니다
+    
+    // Google Analytics Embed API를 사용한 실제 데이터 연동
+    try {
+      // Google Analytics Embed API 로드
+      if (typeof gapi !== 'undefined' && gapi.analytics) {
+        loadGA4Data();
+      } else {
+        // Embed API가 로드되지 않은 경우 임시 데이터 표시
+        document.getElementById('total-visitors').textContent = '📊';
+        document.getElementById('today-visitors').textContent = '📊';
+        document.getElementById('total-pageviews').textContent = '📊';
+      }
+    } catch (error) {
+      console.error('GA4 API 호출 실패:', error);
+      document.getElementById('total-visitors').textContent = '📊';
+      document.getElementById('today-visitors').textContent = '📊';
+      document.getElementById('total-pageviews').textContent = '📊';
+    }
+    
+  } catch (error) {
+    console.error('방문자 통계 로드 실패:', error);
+    document.getElementById('total-visitors').textContent = '📊';
+    document.getElementById('today-visitors').textContent = '📊';
+    document.getElementById('total-pageviews').textContent = '📊';
+  }
+}
+
+// Google Analytics 4 데이터 로드 함수 (Data API v1 사용)
+async function loadGA4Data() {
+  const propertyId = '{{ site.analytics.google.property_id }}';
+  
+  try {
+    // Google Analytics Data API v1을 사용한 실제 데이터 가져오기
+    // 참고: CORS 이슈로 인해 서버 사이드에서 처리하는 것이 좋습니다
+    
+    // 방법 1: 서버리스 함수 호출 (권장)
+    const response = await fetch(`/api/ga4-analytics?property_id=${propertyId}`);
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('total-visitors').textContent = data.total_visitors.toLocaleString();
+      document.getElementById('today-visitors').textContent = data.today_visitors.toLocaleString();
+      document.getElementById('total-pageviews').textContent = data.total_pageviews.toLocaleString();
+      return;
+    }
+    
+    // 방법 2: Google Analytics Embed API (폴백)
+    if (typeof gapi !== 'undefined' && gapi.analytics) {
+      loadGA4EmbedAPI();
+    } else {
+      // Embed API 로드 시도
+      loadGoogleAnalyticsEmbedAPI();
+    }
+    
+  } catch (error) {
+    console.error('GA4 API 호출 실패:', error);
+    // 에러 시 기본 표시
+    document.getElementById('total-visitors').textContent = '📊';
+    document.getElementById('today-visitors').textContent = '📊';
+    document.getElementById('total-pageviews').textContent = '📊';
+  }
+}
+
+// Google Analytics Embed API 사용 (폴백)
+function loadGA4EmbedAPI() {
+  gapi.analytics.ready(function() {
+    // 총 방문자 수 (30일)
+    var totalVisitorsQuery = new gapi.analytics.report.Data({
+      query: {
+        metrics: 'ga:users',
+        'start-date': '30daysAgo',
+        'end-date': 'today'
+      }
+    });
+    
+    // 오늘 방문자 수
+    var todayVisitorsQuery = new gapi.analytics.report.Data({
+      query: {
+        metrics: 'ga:users',
+        'start-date': 'today',
+        'end-date': 'today'
+      }
+    });
+    
+    // 총 페이지뷰 (30일)
+    var totalPageviewsQuery = new gapi.analytics.report.Data({
+      query: {
+        metrics: 'ga:pageviews',
+        'start-date': '30daysAgo',
+        'end-date': 'today'
+      }
+    });
+    
+    // 쿼리 실행 및 결과 표시
+    totalVisitorsQuery.execute(function(response) {
+      if (response.totalsForAllResults) {
+        const totalVisitors = response.totalsForAllResults['ga:users'];
+        document.getElementById('total-visitors').textContent = parseInt(totalVisitors).toLocaleString();
+      }
+    });
+    
+    todayVisitorsQuery.execute(function(response) {
+      if (response.totalsForAllResults) {
+        const todayVisitors = response.totalsForAllResults['ga:users'];
+        document.getElementById('today-visitors').textContent = parseInt(todayVisitors).toLocaleString();
+      }
+    });
+    
+    totalPageviewsQuery.execute(function(response) {
+      if (response.totalsForAllResults) {
+        const totalPageviews = response.totalsForAllResults['ga:pageviews'];
+        document.getElementById('total-pageviews').textContent = parseInt(totalPageviews).toLocaleString();
+      }
+    });
+  });
+}
+
+// Google Analytics Embed API 로드 함수
+function loadGoogleAnalyticsEmbedAPI() {
+  const script = document.createElement('script');
+  script.src = 'https://apis.google.com/js/platform.js';
+  script.onload = function() {
+    gapi.load('analytics', function() {
+      loadGA4EmbedAPI();
+    });
+  };
+  document.head.appendChild(script);
+}
+
+// 페이지 로드 후 통계 로드
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadVisitorStats);
+} else {
+  loadVisitorStats();
+}
+</script>
+{% endif %}

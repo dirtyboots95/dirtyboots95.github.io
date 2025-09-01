@@ -3,3 +3,10 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+# 보안 파일들 (Git에 포함하지 않음)
+.secrets/
+.env
+*.pem
+*.key
+*.json
