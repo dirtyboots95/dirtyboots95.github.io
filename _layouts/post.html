@@ -8,7 +8,7 @@ comments: true
     <time datetime="{{ page.date }}">{{ page.date | date: site.theme_config.date_format }}</time>
     {% if site.goat_counter %}
     <span class="pageviews">
-      📊 조회수: <span data-goatcounter-url="{{ page.url | absolute_url }}">로딩 중...</span>
+      📊 조회수: <span data-goatcounter-url="{{ page.url }}">로딩 중...</span>
     </span>
     {% endif %}
   </p>

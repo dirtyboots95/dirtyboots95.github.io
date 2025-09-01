@@ -1,0 +1,34 @@
+[build]
+  publish = "_site"
+  command = "bundle exec jekyll build"
+
+[build.environment]
+  JEKYLL_ENV = "production"
+  NODE_VERSION = "18"
+
+# Netlify Functions 설정
+[functions]
+  directory = "netlify/functions"
+
+# 리다이렉트 설정
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# 헤더 설정
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+# 환경 변수 설정 (실제 값은 Netlify 대시보드에서 설정)
+[context.production.environment]
+  GOOGLE_APPLICATION_CREDENTIALS = "google-credentials.json"
+  GA4_PROPERTY_ID = "503083435"
+
+[context.deploy-preview.environment]
+  GOOGLE_APPLICATION_CREDENTIALS = "google-credentials.json"
+  GA4_PROPERTY_ID = "503083435"

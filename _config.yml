@@ -52,6 +52,9 @@ disqus_shortname: dirtyboots95
 analytics:
   google:
     id: "G-H9LCES4944" # Google Analytics 4 Measurement ID
+    property_id: "503083435" # GA4 Property ID (실제 속성 ID)
+    stream_id: "12092786575" # GA4 Stream ID
+    account: "dirtyboots95" # GA4 계정명
   goatcounter:
     id: "dirtyboots95"
   plausible:

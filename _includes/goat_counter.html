@@ -1,62 +1,106 @@
+{% comment %}
+  GoatCounter 방문자 추적 및 조회수 표시
+{% endcomment %}
+
+<script>
+  // GoatCounter 로드 확인
+  console.log('🔍 GoatCounter 스크립트 로드됨');
+  
+  var t = setInterval(function () {
+    if (window.goatcounter && window.goatcounter.visit_count) {
+      clearInterval(t)
+      console.log('✅ GoatCounter 객체 확인됨');
+      window.goatcounter.visit_count({ append: 'body' })
+    }
+  }, 100)
+</script>
+
 <script data-goatcounter="https://{{ site.goat_counter }}.goatcounter.com/count"
         data-goatcounter-settings='{"no_onload": true}'
         async src="//gc.zgo.at/count.js"></script>
 
 <!-- 페이지별 조회수 표시를 위한 스크립트 -->
 <script>
+  console.log('🔍 페이지 조회수 로드 스크립트 시작');
+  
   // 세션 기반 방문자 추적
   function trackUniqueVisit() {
     const sessionKey = 'visited_' + window.location.pathname;
     const hasVisited = sessionStorage.getItem(sessionKey);
     
     if (!hasVisited) {
+      console.log('🆕 새로운 방문자: 페이지뷰 추적 시작');
       // 세션에서 방문하지 않은 경우에만 카운팅
       if (window.goatcounter) {
         window.goatcounter.count({
           path: window.location.pathname,
           title: document.title
         });
+        console.log('✅ GoatCounter 페이지뷰 추적 완료');
+      } else {
+        console.log('❌ GoatCounter 객체를 찾을 수 없음');
       }
       sessionStorage.setItem(sessionKey, 'true');
+    } else {
+      console.log('🔄 이미 방문한 페이지: 추적 건너뜀');
     }
   }
   
-  // Goat Counter API를 사용하여 페이지별 조회수 가져오기
+  // GoatCounter API를 사용하여 실제 조회수 가져오기
   async function loadPageViews() {
+    console.log('🔍 조회수 로드 시작');
     const pageviewElements = document.querySelectorAll('[data-goatcounter-url]');
+    console.log(`📊 조회수 요소 ${pageviewElements.length}개 발견`);
     
     for (const element of pageviewElements) {
       const url = element.getAttribute('data-goatcounter-url');
-      const path = new URL(url).pathname;
+      // 상대 경로를 절대 경로로 변환
+      const path = url.startsWith('/') ? url : '/' + url;
+      console.log(`🔍 원본 URL: ${url}`);
+      console.log(`🔍 처리된 경로: ${path}`);
       
       try {
-        // Goat Counter API 호출
-        const response = await fetch(`https://{{ site.goat_counter }}.goatcounter.com/api/v0/stats/path?path=${encodeURIComponent(path)}`);
+        // GoatCounter API 호출
+        const apiUrl = `https://{{ site.goat_counter }}.goatcounter.com/api/v0/stats/path?path=${encodeURIComponent(path)}`;
+        console.log(`🔍 API 호출: ${apiUrl}`);
+        
+        const response = await fetch(apiUrl);
+        console.log(`🔍 API 응답 상태: ${response.status}`);
+        
         if (response.ok) {
           const data = await response.json();
+          console.log(`🔍 API 응답 데이터:`, data);
+          
           if (data && data.stats && data.stats.length > 0) {
             const pageViews = data.stats[0].count;
-            element.textContent = pageViews.toLocaleString();
+            element.textContent = pageViews.toString();
+            console.log(`✅ 실제 조회수: ${pageViews}`);
           } else {
             element.textContent = '0';
+            console.log(`📊 조회수 없음: 0으로 설정`);
           }
         } else {
-          element.textContent = '📊';
+          element.textContent = '0';
+          console.log(`❌ API 호출 실패: ${response.status}`);
         }
       } catch (error) {
-        // CORS 이슈나 네트워크 오류 시 기본 표시
-        element.textContent = '📊';
+        console.log(`❌ API 호출 오류:`, error);
+        element.textContent = '0';
       }
+      
+      console.log(`🔍 최종 요소 텍스트:`, element.textContent);
     }
   }
   
   // 페이지 로드 후 실행
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('📄 DOM 로드 완료');
       trackUniqueVisit();
       loadPageViews();
     });
   } else {
+    console.log('📄 DOM 이미 로드됨');
     trackUniqueVisit();
     loadPageViews();
   }

@@ -1,0 +1,201 @@
+{% comment %}
+  Google Analytics 방문자 통계 카운터
+  사용법: {% include visitor_counter.html %}
+{% endcomment %}
+
+<div class="visitor-counter">
+  <div class="counter-item">
+    <span class="counter-label">📊 총 방문자</span>
+    <span class="counter-value" id="total-visitors">로딩 중...</span>
+  </div>
+  <div class="counter-item">
+    <span class="counter-label">👥 오늘 방문자</span>
+    <span class="counter-value" id="today-visitors">로딩 중...</span>
+  </div>
+  <div class="counter-item">
+    <span class="counter-label">📈 총 페이지뷰</span>
+    <span class="counter-value" id="total-pageviews">로딩 중...</span>
+  </div>
+</div>
+
+<script>
+// 방문자 통계 로드 함수
+async function loadVisitorStats() {
+  try {
+    // Google Analytics 4 데이터 로드 시도
+    await loadGA4Data();
+  } catch (error) {
+    console.error('GA4 API 호출 실패:', error);
+    // 에러 시 기본 표시
+    displayErrorData();
+  }
+}
+
+// 에러 데이터 표시
+function displayErrorData() {
+  document.getElementById('total-visitors').textContent = '📊';
+  document.getElementById('today-visitors').textContent = '📊';
+  document.getElementById('total-pageviews').textContent = '📊';
+  
+  // 에러 상태 표시
+  const counter = document.querySelector('.visitor-counter');
+  if (counter) {
+    counter.style.opacity = '0.6';
+    counter.title = '데이터 로드 실패 - 잠시 후 다시 시도해주세요';
+  }
+}
+
+// Google Analytics 4 데이터 로드 함수
+async function loadGA4Data() {
+  const propertyId = '{{ site.analytics.google.property_id }}';
+  
+  // 로컬 환경에서는 로컬 API 서버 사용
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const apiBaseUrl = isLocal ? 'http://localhost:3001' : '';
+  
+  try {
+    // 방법 1: 서버리스 함수 호출 (권장)
+    const response = await fetch(`${apiBaseUrl}/api/ga4-analytics?property_id=${propertyId}`);
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('total-visitors').textContent = data.total_visitors.toLocaleString();
+      document.getElementById('today-visitors').textContent = data.today_visitors.toLocaleString();
+      document.getElementById('total-pageviews').textContent = data.total_pageviews.toLocaleString();
+      
+      // 성공 상태 표시
+      const counter = document.querySelector('.visitor-counter');
+      if (counter) {
+        counter.style.opacity = '1';
+        const source = isLocal ? '로컬 테스트' : 'GA4 API';
+        counter.title = `마지막 업데이트: ${new Date().toLocaleString('ko-KR')} (${source})`;
+      }
+      return;
+    }
+    
+    // 방법 2: Google Analytics Embed API (폴백)
+    if (typeof gapi !== 'undefined' && gapi.analytics) {
+      await loadGA4EmbedAPI();
+    } else {
+      // Embed API 로드 시도
+      await loadGoogleAnalyticsEmbedAPI();
+    }
+    
+  } catch (error) {
+    console.error('GA4 API 호출 실패:', error);
+    // 에러 시 폴백 방법 시도
+    try {
+      await loadGA4EmbedAPI();
+    } catch (fallbackError) {
+      console.error('폴백 방법도 실패:', fallbackError);
+      displayErrorData();
+    }
+  }
+}
+
+// Google Analytics Embed API 사용 (폴백)
+async function loadGA4EmbedAPI() {
+  return new Promise((resolve, reject) => {
+    if (typeof gapi === 'undefined' || !gapi.analytics) {
+      reject(new Error('Google Analytics Embed API가 로드되지 않았습니다.'));
+      return;
+    }
+
+    gapi.analytics.ready(function() {
+      try {
+        // 총 방문자 수 (30일)
+        var totalVisitorsQuery = new gapi.analytics.report.Data({
+          query: {
+            metrics: 'ga:users',
+            'start-date': '30daysAgo',
+            'end-date': 'today'
+          }
+        });
+        
+        // 오늘 방문자 수
+        var todayVisitorsQuery = new gapi.analytics.report.Data({
+          query: {
+            metrics: 'ga:users',
+            'start-date': 'today',
+            'end-date': 'today'
+          }
+        });
+        
+        // 총 페이지뷰 (30일)
+        var totalPageviewsQuery = new gapi.analytics.report.Data({
+          query: {
+            metrics: 'ga:pageviews',
+            'start-date': '30daysAgo',
+            'end-date': 'today'
+          }
+        });
+        
+        let completedQueries = 0;
+        const totalQueries = 3;
+        
+        // 쿼리 완료 처리
+        function handleQueryComplete() {
+          completedQueries++;
+          if (completedQueries === totalQueries) {
+            resolve();
+          }
+        }
+        
+        // 총 방문자 수 쿼리 실행
+        totalVisitorsQuery.execute(function(response) {
+          if (response.totalsForAllResults) {
+            const totalVisitors = response.totalsForAllResults['ga:users'];
+            document.getElementById('total-visitors').textContent = parseInt(totalVisitors).toLocaleString();
+          }
+          handleQueryComplete();
+        });
+        
+        // 오늘 방문자 수 쿼리 실행
+        todayVisitorsQuery.execute(function(response) {
+          if (response.totalsForAllResults) {
+            const todayVisitors = response.totalsForAllResults['ga:users'];
+            document.getElementById('today-visitors').textContent = parseInt(todayVisitors).toLocaleString();
+          }
+          handleQueryComplete();
+        });
+        
+        // 총 페이지뷰 쿼리 실행
+        totalPageviewsQuery.execute(function(response) {
+          if (response.totalsForAllResults) {
+            const totalPageviews = response.totalsForAllResults['ga:pageviews'];
+            document.getElementById('total-pageviews').textContent = parseInt(totalPageviews).toLocaleString();
+          }
+          handleQueryComplete();
+        });
+        
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+
+// Google Analytics Embed API 로드 함수
+function loadGoogleAnalyticsEmbedAPI() {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://apis.google.com/js/platform.js';
+    script.onload = function() {
+      gapi.load('analytics', function() {
+        resolve();
+      });
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// 페이지 로드 후 통계 로드
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadVisitorStats);
+} else {
+  loadVisitorStats();
+}
+
+// 5분마다 데이터 새로고침
+setInterval(loadVisitorStats, 5 * 60 * 1000);
+</script>
