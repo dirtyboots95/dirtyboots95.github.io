@@ -5,6 +5,25 @@ layout: default
 {%- for item in site.data.menu.entries -%}
   <div class="menu-section">
     <h2><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h2>
+    
+    {%- if item.post_list -%}
+      {%- assign category_name = item.post_list.category -%}
+      {%- if category_name -%}
+        {%- assign posts_source = site.categories[category_name] | default: "" -%}
+      {%- else -%}
+        {%- assign posts_source = site.posts -%}
+      {%- endif -%}
+      
+      {%- if posts_source.size == 0 and item.description -%}
+        <p class="menu-description">{{ item.description }}</p>
+      {%- endif -%}
+      
+      {%- include post_list.html post_list=item.post_list -%}
+    {%- else -%}
+      {%- if item.description -%}
+        <p class="menu-description">{{ item.description }}</p>
+      {%- endif -%}
+    {%- endif -%}
 
     {%- if item.entries -%}
       <ul style="margin-top: 1rem;">
@@ -19,10 +38,6 @@ layout: default
           </li>
         {%- endfor -%}
       </ul>
-    {%- endif -%}
-
-    {%- if item.post_list -%}
-      {%- include post_list.html post_list=item.post_list -%}
     {%- endif -%}
 
     {%- if item.gallery_preview -%}
