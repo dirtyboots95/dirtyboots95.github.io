@@ -22,5 +22,7 @@
     {%- endif -%}
   </ul>
 {%- else -%}
-  <p style="color: #666; font-style: italic;">{{ site.theme_config.empty_posts_message | default: "아직 등록된 글이 없습니다." }}</p>
+  <ul style="margin-top: 0.5rem;">
+    <li>{{ site.theme_config.empty_posts_message | default: "아직 등록된 글이 없습니다." }}</li>
+  </ul>
 {%- endif -%}

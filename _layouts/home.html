@@ -15,18 +15,22 @@ layout: default
       {%- endif -%}
       
       {%- if posts_source.size == 0 and item.description -%}
-        <p class="menu-description">{{ item.description }}</p>
+        <ul style="margin-top: 0.5rem;">
+          <li style="list-style: none; margin-left: -1.5em;" class="menu-description">{{ item.description }}</li>
+        </ul>
       {%- endif -%}
       
       {%- include post_list.html post_list=item.post_list -%}
     {%- else -%}
       {%- if item.description -%}
-        <p class="menu-description">{{ item.description }}</p>
+        <ul style="margin-top: 0.5rem;">
+          <li style="list-style: none; margin-left: -1.5em;" class="menu-description">{{ item.description }}</li>
+        </ul>
       {%- endif -%}
     {%- endif -%}
 
     {%- if item.entries -%}
-      <ul style="margin-top: 1rem;">
+      <ul style="margin-top: 0.5rem;">
         {%- assign sorted_entries = item.entries | sort: 'date' | reverse -%}
         {%- for sub_item in sorted_entries -%}
           <li>
