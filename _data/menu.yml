@@ -1,6 +1,7 @@
 entries:
   - title: 📝 Journal
     url: /journal.html
+    description: 일상의 기록과 생각들을 담은 공간입니다.
     post_list:
       category: journal
       limit: 5
@@ -10,6 +11,7 @@ entries:
 
   - title: 📚 Book
     url: /book.html
+    description: 읽은 책들의 감상과 생각을 정리합니다.
     post_list:
       category: book
       limit: 3
@@ -19,6 +21,7 @@ entries:
 
   - title: 🎬 Movie
     url: /movie.html
+    description: 본 영화들의 리뷰와 감상을 기록합니다.
     post_list:
       category: movie
       limit: 3
@@ -28,15 +31,18 @@ entries:
 
   # - title: 🖼️ Gallery
   #   url: /gallery.html
+  #   description: 사진과 이미지들을 모아놓은 갤러리입니다.
   #   gallery_preview: true
 
   - title: 💬 Guestbook
     url: /guestbook.html
+    description: 방문자들의 소중한 메시지를 남겨주세요.
     entries:
       - title: 이름과 이메일을 입력하고 방명록을 남겨주세요. (이메일은 공개되지 않습니다)
 
   # - title: About
   #   url: /about.html
+  #   description: 저에 대한 소개와 경험을 담았습니다.
   #   entries:
   #     - title: 16년간 소프트웨어 엔지니어
   #     - title: 이제 아이스크림을 만듭니다
