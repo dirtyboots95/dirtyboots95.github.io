@@ -71,6 +71,14 @@ sass:
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Sitemap settings
+sitemap:
+  exclude: ["/draft/", "/404.html"]
+  include: ["/journal/", "/book/", "/movie/", "/gallery/"]
+  priority: 0.8
+  changefreq: "monthly"
 
 # Collections
 collections:
