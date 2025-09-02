@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방문자 카운터 테스트 - 실제 GA4 API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .test-title {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .test-steps {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .test-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .test-steps li {
+            margin-bottom: 8px;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        .button:hover {
+            background: #0056b3;
+        }
+        
+        .button.secondary {
+            background: #6c757d;
+        }
+        
+        .button.secondary:hover {
+            background: #545b62;
+        }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .console-output .log {
+            margin: 2px 0;
+        }
+        
+        .console-output .error {
+            color: #ff6b6b;
+        }
+        
+        .console-output .success {
+            color: #4ecdc4;
+        }
+        
+        .console-output .warning {
+            color: #ffd93d;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🏠 방문자 카운터 로컬 테스트 - 실제 GA4 API</h1>
+        
+        <div class="test-info">
+            <strong>📋 테스트 목적:</strong> 간단한 방문자 카운터가 로컬 환경에서 실제 GA4 API를 사용하여 데이터를 가져오는지 확인
+        </div>
+        
+        <div class="test-steps">
+            <strong>🔧 테스트 단계:</strong>
+            <ol>
+                <li>Jekyll 서버가 실행 중인지 확인</li>
+                <li>브라우저에서 localhost:4000 접속</li>
+                <li>방문자 카운터가 실제 GA4 데이터를 표시하는지 확인</li>
+                <li>개발자 도구에서 콘솔 메시지 확인</li>
+                <li>GA4 API 호출 성공 여부 확인</li>
+            </ol>
+        </div>
+        
+        <div class="status info">
+            📊 <strong>현재 상태:</strong> 실제 GA4 API 사용 모드
+        </div>
+        
+        <div class="status success">
+            ✅ <strong>예상 결과:</strong> 
+            실제 Google Analytics 4 데이터가 표시됩니다 (테스트 데이터가 아님)
+        </div>
+        
+        <div class="status warning">
+            ⚠️ <strong>주의사항:</strong> 
+            GA4 Embed API가 제대로 설정되어 있어야 하며, 
+            GA4 계정에 데이터가 있어야 합니다.
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="button" onclick="window.open('http://localhost:4000', '_blank')">
+                🚀 Jekyll 사이트 열기
+            </button>
+            <button class="button secondary" onclick="checkJekyllStatus()">
+                🔍 Jekyll 상태 확인
+            </button>
+            <button class="button secondary" onclick="clearConsole()">
+                🗑️ 콘솔 클리어
+            </button>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>📝 테스트 체크리스트</h2>
+        <div id="checklist">
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" id="check1"> 
+                <label for="check1">Jekyll 서버가 localhost:4000에서 실행 중</label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" id="check2"> 
+                <label for="check2">방문자 카운터가 홈페이지에 표시됨</label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" id="check3"> 
+                <label for="check3">실제 GA4 데이터가 정상적으로 표시됨</label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" id="check4"> 
+                <label for="check4">브라우저 콘솔에 GA4 API 호출 성공 메시지 표시</label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input type="checkbox" id="check5"> 
+                <label for="check5">페이지 새로고침 시 정상 동작</label>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="button" onclick="resetChecklist()">
+                🔄 체크리스트 초기화
+            </button>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>📊 콘솔 출력 시뮬레이션</h2>
+        <div class="console-output" id="consoleOutput">
+            <div class="log">🏠 방문자 카운터 로컬 테스트 페이지가 로드되었습니다.</div>
+            <div class="log">📋 테스트 단계를 따라 진행하세요.</div>
+            <div class="log">🔍 localhost:4000에서 실제 GA4 API 호출을 확인하세요.</div>
+        </div>
+    </div>
+    
+    <script>
+        function checkJekyllStatus() {
+            fetch('http://localhost:4000')
+                .then(response => {
+                    if (response.ok) {
+                        addConsoleLog('✅ Jekyll 서버가 정상적으로 실행 중입니다!', 'success');
+                        addConsoleLog('📍 localhost:4000에서 사이트를 확인할 수 있습니다.', 'success');
+                    } else {
+                        addConsoleLog('⚠️ Jekyll 서버에 접속할 수 있지만 응답이 정상적이지 않습니다.', 'warning');
+                    }
+                })
+                .catch(error => {
+                    addConsoleLog('❌ Jekyll 서버에 접속할 수 없습니다.', 'error');
+                    addConsoleLog('💡 다음 명령어로 서버를 시작하세요: make serve', 'warning');
+                });
+        }
+        
+        function resetChecklist() {
+            const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+        
+        function clearConsole() {
+            const consoleOutput = document.getElementById('consoleOutput');
+            consoleOutput.innerHTML = '<div class="log">🗑️ 콘솔이 클리어되었습니다.</div>';
+        }
+        
+        function addConsoleLog(message, type = 'log') {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const logElement = document.createElement('div');
+            logElement.className = `log ${type}`;
+            logElement.textContent = message;
+            consoleOutput.appendChild(logElement);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        // 페이지 로드 시 안내 메시지
+        window.addEventListener('load', function() {
+            addConsoleLog('🏠 방문자 카운터 로컬 테스트 페이지가 로드되었습니다.');
+            addConsoleLog('📋 테스트 단계를 따라 진행하세요.');
+            addConsoleLog('🔍 localhost:4000에서 실제 GA4 API 호출을 확인하세요.');
+            addConsoleLog('📊 이제 테스트 데이터가 아닌 실제 GA4 데이터가 표시됩니다!', 'success');
+        });
+    </script>
+</body>
+</html>

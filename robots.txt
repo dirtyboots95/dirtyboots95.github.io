@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: {{ site.url }}/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /_site/
+Disallow: /_posts/draft/
+Disallow: /_templates/
+Disallow: /Gemfile
+Disallow: /Gemfile.lock
+Disallow: /Makefile
+Disallow: /create_post.rb
+Disallow: /POST_GUIDE.md
+Disallow: /IMAGE_GUIDE.md
