@@ -1,9 +1,7 @@
 backend:
-  name: git-gateway
-  branch: main # Branch to update (optional; defaults to master)
-  repo: dirtyboots95/dirtyboots95.github.io # Repository name
-  # For local development, you can use 'test-repo' backend
-  # name: test-repo
+  name: github
+  repo: dirtyboots95/dirtyboots95.github.io
+  branch: gh-pages
 
 # Media storage configuration
 media_folder: "assets/images" # Media files will be stored in the repo under assets/images
