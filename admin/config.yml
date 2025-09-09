@@ -2,11 +2,7 @@ backend:
   name: github
   repo: dirtyboots95/dirtyboots95.github.io
   branch: gh-pages
-  # OAuth 앱 설정 후 아래 주석을 해제하고 실제 값으로 변경하세요
   client_id: "Ov23li0d6SnGWILb1t8X"
-  base_url: "https://api.github.com"
-  auth_endpoint: "https://github.com/login/oauth/authorize"
-  auth_scope: "repo"
 
 # Media storage configuration
 media_folder: "assets/images" # Media files will be stored in the repo under assets/images
