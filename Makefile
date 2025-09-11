@@ -4,7 +4,7 @@
 
 # 개발 서버 실행
 serve:
-	bundle exec jekyll serve --livereload
+	bundle exec jekyll serve --livereload --config _config.yml,_config.dev.yml
 
 # Production 환경으로 로컬 실행
 serve-prod:

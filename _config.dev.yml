@@ -1,0 +1,22 @@
+# 개발 환경 전용 설정 (로컬 전용)
+
+jekyll_admin:
+  hidden_links:
+    - datafiles
+    - configuration
+  homepage: "posts"
+  # 보안 설정 (로컬 개발에서만 사용)
+  whitelist: []
+  # 파일 업로드 설정
+  static_files:
+    upload_dir: "assets/images"
+  # 컬렉션별 설정: 제목 → 파일명 규칙
+  collections:
+    journal:
+      slug: "{{ title | slugify: 'default' | replace: ' ', '-' | replace: '--', '-' | replace: '---', '-' | replace: '----', '-' }}"
+    book:
+      slug: "{{ title | slugify: 'default' | replace: ' ', '-' | replace: '--', '-' | replace: '---', '-' | replace: '----', '-' }}"
+    movie:
+      slug: "{{ title | slugify: 'default' | replace: ' ', '-' | replace: '--', '-' | replace: '---', '-' | replace: '----', '-' }}"
+
+
