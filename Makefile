@@ -4,7 +4,7 @@
 
 # 개발 서버 실행
 serve:
-	bundle exec jekyll serve --livereload
+	JEKYLL_ENV=development bundle exec jekyll serve --livereload
 
 # Production 환경으로 로컬 실행
 serve-prod:
