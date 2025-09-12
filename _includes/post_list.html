@@ -8,16 +8,23 @@
   {%- assign posts_source = site.posts -%}
 {%-endif-%}
 
-{%- if posts_source.size > 0 -%}
+{%- comment -%}Filter out posts that are in 'draft' category{%- endcomment -%}
+{%- assign filtered_posts = '' | split: '' -%}
+{%- for p in posts_source -%}
+  {%- if p.categories contains 'draft' -%}{%- continue -%}{%- endif -%}
+  {%- assign filtered_posts = filtered_posts | push: p -%}
+{%- endfor -%}
+
+{%- if filtered_posts.size > 0 -%}
   <ul style="margin-top: 1rem;">
-    {%- for post in posts_source limit: list_config.limit -%}
+    {%- for post in filtered_posts limit: list_config.limit -%}
     <li>
       <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.theme_config.date_format }}</time>
       |
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     </li>
     {%- endfor -%}
-    {%- if list_config.show_more and posts_source.size > list_config.limit -%}
+    {%- if list_config.show_more and filtered_posts.size > list_config.limit -%}
     <li><a href="{{ list_config.show_more_url | relative_url }}">{{ list_config.show_more_text }}</a></li>
     {%- endif -%}
   </ul>
