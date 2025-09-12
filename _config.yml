@@ -76,21 +76,15 @@ plugins:
 # Sitemap settings
 sitemap:
   exclude: ["/draft/", "/404.html"]
-  include: ["/journal/", "/book/", "/movie/", "/gallery/"]
+  include: ["/journal/"]
   priority: 0.8
   changefreq: "monthly"
 
-# Collections
+# Collections (book/movie는 더 이상 사용하지 않음)
 collections:
   journal:
     output: true
     permalink: /journal/:slug.html
-  book:
-    output: true
-    permalink: /book/:slug.html
-  movie:
-    output: true
-    permalink: /movie/:slug.html
   gallery:
     output: true
     permalink: /gallery/:slug.html

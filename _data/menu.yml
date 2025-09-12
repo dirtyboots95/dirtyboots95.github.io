@@ -1,33 +1,12 @@
 entries:
-  - title: 📝 Journal
-    url: /journal.html
-    description: 일상의 기록과 생각들을 담은 공간입니다.
+  - title: 📝 Posts
+    url: /post.html
+    description: 카테고리나 태그로 원하는 글을 찾아보세요.
     post_list:
-      category: journal
       limit: 5
       show_more: true
       show_more_text: 더 보기...
-      show_more_url: journal.html
-
-  - title: 📚 Book
-    url: /book.html
-    description: 읽은 책들의 감상과 생각을 정리합니다.
-    post_list:
-      category: book
-      limit: 3
-      show_more: true
-      show_more_text: 더 보기...
-      show_more_url: book.html
-
-  - title: 🎬 Movie
-    url: /movie.html
-    description: 본 영화들의 리뷰와 감상을 기록합니다.
-    post_list:
-      category: movie
-      limit: 3
-      show_more: true
-      show_more_text: 더 보기...
-      show_more_url: movie.html
+      show_more_url: post.html
 
   # - title: 🖼️ Gallery
   #   url: /gallery.html

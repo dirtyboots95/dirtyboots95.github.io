@@ -1,0 +1,93 @@
+---
+layout: default
+permalink: /post.html
+---
+
+<h2>📝 Posts</h2>
+<!-- <p style="color:#666">카테고리나 태그로 원하는 글을 찾아보세요.</p> -->
+
+{%- comment -%}Build filtered posts excluding 'draft' category{%- endcomment -%}
+{%- assign filtered_posts = '' | split: '' -%}
+{%- for p in site.posts -%}
+  {%- if p.categories contains 'draft' -%}{%- continue -%}{%- endif -%}
+  {%- assign filtered_posts = filtered_posts | push: p -%}
+{%- endfor -%}
+
+{%- assign total_count = filtered_posts.size -%}
+<h3>전체 글({{ total_count }})</h3>
+<!-- <p style="margin-top: .25rem; color:#888">총 {{ total_count }}개</p> -->
+
+{%- if total_count > 0 -%}
+  {%- assign posts_by_year = filtered_posts | group_by_exp: 'post', "post.date | date: '%Y'" -%}
+  {%- assign years_sorted = posts_by_year | sort: 'name' | reverse -%}
+  <div class="archive-tree" style="margin-top: 0.5rem;">
+    {%- for year_group in years_sorted -%}
+      {%- assign year = year_group.name -%}
+      {%- assign year_posts = year_group.items -%}
+      <details>
+        <summary style="cursor:pointer; font-weight:600;">{{ year }} <span style="color:#888">({{ year_posts.size }})</span></summary>
+        {%- assign posts_by_month = year_posts | group_by_exp: 'post', "post.date | date: '%m'" -%}
+        {%- assign months_sorted = posts_by_month | sort: 'name' | reverse -%}
+        <ul style="list-style: none; padding-left: 0; margin: .5rem 0 1rem 1rem;">
+          {%- for month_group in months_sorted -%}
+            {%- assign month = month_group.name -%}
+            {%- assign month_posts = month_group.items | sort: 'date' | reverse -%}
+            <li>
+              <details>
+                <summary style="cursor:pointer;">{{ month | plus: 0 }}월 <span style="color:#888">({{ month_posts.size }})</span></summary>
+                <ul style="margin: .5rem 0 1rem 1rem;">
+                  {%- for post in month_posts -%}
+                    <li>
+                      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: site.theme_config.date_format }}</time>
+                      -
+                      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </details>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </details>
+    {%- endfor -%}
+  </div>
+{%- else -%}
+  <p style="color: #666; font-style: italic;">{{ site.theme_config.empty_posts_message | default: "아직 등록된 글이 없습니다." }}</p>
+{%- endif -%}
+
+<!-- <h3>카테고리</h3>
+<ul>
+{%- assign categories = site.categories | sort -%}
+{%- for category in categories -%}
+  {%- assign category_name = category[0] -%}
+  {%- if category_name == 'draft' -%}{%- continue -%}{%- endif -%}
+  {%- assign posts_in_category = category[1] -%}
+  {%- assign visible_count = 0 -%}
+  {%- for p in posts_in_category -%}
+    {%- if p.categories contains 'draft' -%}{%- continue -%}{%- endif -%}
+    {%- assign visible_count = visible_count | plus: 1 -%}
+  {%- endfor -%}
+  <li>
+    <a href="#category-{{ category_name | uri_escape }}">{{ category_name }}</a>
+    <span style="color:#888">({{ visible_count }})</span>
+  </li>
+{%- endfor -%}
+</ul>
+
+<h3>태그</h3>
+<ul>
+{%- assign tags = site.tags | sort -%}
+{%- for tag in tags -%}
+  {%- assign tag_name = tag[0] -%}
+  {%- assign posts_in_tag = tag[1] -%}
+  {%- assign tag_visible_count = 0 -%}
+  {%- for p in posts_in_tag -%}
+    {%- if p.categories contains 'draft' -%}{%- continue -%}{%- endif -%}
+    {%- assign tag_visible_count = tag_visible_count | plus: 1 -%}
+  {%- endfor -%}
+  <li>
+    <a href="#tag-{{ tag_name | uri_escape }}">#{{ tag_name }}</a>
+    <span style="color:#888">({{ tag_visible_count }})</span>
+  </li>
+{%- endfor -%}
+</ul> -->
