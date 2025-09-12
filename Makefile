@@ -1,6 +1,6 @@
 # Jekyll Blog Management
 
-.PHONY: serve build clean new-post new-journal new-book new-movie
+.PHONY: serve build clean new-post new-draft
 
 # 개발 서버 실행
 serve:
@@ -18,150 +18,69 @@ build:
 clean:
 	bundle exec jekyll clean
 
-# 새 게시물 생성 (대화형)
+# 새 게시물 생성 (루트 _posts/에 생성)
 new-post:
 	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
 	if [ -n "$$branch_name" ]; then \
 		git checkout -b $$branch_name; \
 		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
 	fi; \
-	ruby create_post.rb; \
+	read -p "제목을 입력하세요: " title; \
+	read -p "카테고리(선택, 기본값 journal): " category; \
+	read -p "태그(쉼표로 구분, 선택): " tags; \
+	if [ -z "$$category" ]; then category=journal; fi; \
+	date=$$(date +%Y-%m-%d); \
+	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
+	filename="_posts/$$date-$$safe_title.md"; \
+	echo "---" > $$filename; \
+	echo "layout: post" >> $$filename; \
+	echo "title: \"$$title\"" >> $$filename; \
+	echo "date: $$date 10:00:00 +0900" >> $$filename; \
+	echo "category: $$category" >> $$filename; \
+	if [ -n "$$tags" ]; then echo "tags: [$$tags]" >> $$filename; fi; \
+	echo "comments: true" >> $$filename; \
+	echo "published: true" >> $$filename; \
+	echo "---" >> $$filename; \
+	echo "" >> $$filename; \
+	echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
+	echo "✅ 게시물이 생성되었습니다: $$filename"; \
+	git add $$filename; \
+	git commit -S -m "Add post: $$title" >/dev/null 2>&1 || true; \
 	if [ -n "$$branch_name" ]; then \
-		echo "✅ 게시물이 생성되었습니다. 브랜치를 푸시하려면 'make push-feature'를 실행하세요."; \
+		echo "✅ 게시물이 생성되었습니다. 브랜치를 푸시하려면 'make push-post'를 실행하세요."; \
 	else \
 		echo "✅ 게시물이 생성되었습니다."; \
 	fi
 
-# 새 journal 게시물 생성
-new-journal:
+# 새 초안 생성 (_drafts/에 생성)
+new-draft:
 	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
 	if [ -n "$$branch_name" ]; then \
 		git checkout -b $$branch_name; \
 		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
 	fi; \
 	read -p "제목을 입력하세요: " title; \
-	date=$$(date +%Y-%m-%d); \
+	read -p "카테고리(선택): " category; \
+	read -p "태그(쉼표로 구분, 선택): " tags; \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
-	filename="_posts/journal/$$date-$$safe_title.md"; \
-	if [ -f "_templates/journal_template.md" ]; then \
-		cp "_templates/journal_template.md" $$filename; \
-		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
-		sed -i '' "s/게시물 제목/$$title/g" $$filename; \
-	else \
-		echo "---" > $$filename; \
-		echo "layout: post" >> $$filename; \
-		echo "title: \"$$title\"" >> $$filename; \
-		echo "date: $$date 10:00:00 +0900" >> $$filename; \
-		echo "category: journal" >> $$filename; \
-		echo "comments: true" >> $$filename; \
-		echo "published: true" >> $$filename; \
-		echo "description: \"게시물 설명 (150자 이내)\"" >> $$filename; \
-		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
-		echo "image: \"/assets/images/journal/$$date-$$safe_title.jpg\"" >> $$filename; \
-		echo "last_modified_at: $$date" >> $$filename; \
-		echo "---" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "![오늘의 사진]({{ site.baseurl }}/assets/images/journal/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "게시물 내용을 여기에 작성하세요." >> $$filename; \
-	fi; \
-	echo "📝 이미지 파일을 assets/images/journal/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
-	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
+	filename="_drafts/$$safe_title.md"; \
+	echo "---" > $$filename; \
+	echo "layout: post" >> $$filename; \
+	echo "title: \"$$title\"" >> $$filename; \
+	if [ -n "$$category" ]; then echo "category: $$category" >> $$filename; fi; \
+	if [ -n "$$tags" ]; then echo "tags: [$$tags]" >> $$filename; fi; \
+	echo "comments: true" >> $$filename; \
+	echo "published: false" >> $$filename; \
+	echo "---" >> $$filename; \
+	echo "" >> $$filename; \
+	echo "초안 내용을 여기에 작성하세요." >> $$filename; \
+	echo "✅ 초안이 생성되었습니다: $$filename"; \
 	git add $$filename; \
-	git commit -S -m "Add journal post: $$title"; \
+	git commit -S -m "Add draft: $$title" >/dev/null 2>&1 || true; \
 	if [ -n "$$branch_name" ]; then \
-		git push origin $$branch_name; \
-		echo "✅ Journal 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
+		echo "✅ 초안이 생성되었습니다. 브랜치를 푸시하려면 'make push-post'를 실행하세요."; \
 	else \
-		echo "✅ Journal 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
-	fi
-
-# 새 book 게시물 생성
-new-book:
-	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
-	if [ -n "$$branch_name" ]; then \
-		git checkout -b $$branch_name; \
-		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
-	fi; \
-	read -p "제목을 입력하세요: " title; \
-	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
-	filename="_posts/book/$$date-$$safe_title.md"; \
-	if [ -f "_templates/book_template.md" ]; then \
-		cp "_templates/book_template.md" $$filename; \
-		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
-		sed -i '' "s/책 제목/$$title/g" $$filename; \
-	else \
-		echo "---" > $$filename; \
-		echo "layout: post" >> $$filename; \
-		echo "title: \"$$title\"" >> $$filename; \
-		echo "date: $$date 10:00:00 +0900" >> $$filename; \
-		echo "category: book" >> $$filename; \
-		echo "comments: true" >> $$filename; \
-		echo "published: true" >> $$filename; \
-		echo "description: \"책 리뷰 설명 (150자 이내)\"" >> $$filename; \
-		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
-		echo "image: \"/assets/images/books/$$date-$$safe_title.jpg\"" >> $$filename; \
-		echo "last_modified_at: $$date" >> $$filename; \
-		echo "---" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "![책 표지]({{ site.baseurl }}/assets/images/books/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "책 리뷰 내용을 여기에 작성하세요." >> $$filename; \
-	fi; \
-	echo "📝 책 표지 이미지를 assets/images/books/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
-	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
-	git add $$filename; \
-	git commit -S -m "Add book review: $$title"; \
-	if [ -n "$$branch_name" ]; then \
-		git push origin $$branch_name; \
-		echo "✅ Book 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
-	else \
-		echo "✅ Book 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
-	fi
-
-# 새 movie 게시물 생성
-new-movie:
-	@read -p "브랜치 이름을 입력하세요 (엔터로 건너뛰기): " branch_name; \
-	if [ -n "$$branch_name" ]; then \
-		git checkout -b $$branch_name; \
-		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
-	fi; \
-	read -p "제목을 입력하세요: " title; \
-	date=$$(date +%Y-%m-%d); \
-	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//'); \
-	filename="_posts/movie/$$date-$$safe_title.md"; \
-	if [ -f "_templates/movie_template.md" ]; then \
-		cp "_templates/movie_template.md" $$filename; \
-		sed -i '' "s/YYYY-MM-DD/$$date/g" $$filename; \
-		sed -i '' "s/영화 제목/$$title/g" $$filename; \
-	else \
-		echo "---" > $$filename; \
-		echo "layout: post" >> $$filename; \
-		echo "title: \"$$title\"" >> $$filename; \
-		echo "date: $$date 10:00:00 +0900" >> $$filename; \
-		echo "category: movie" >> $$filename; \
-		echo "comments: true" >> $$filename; \
-		echo "published: true" >> $$filename; \
-		echo "description: \"영화 리뷰 설명 (150자 이내)\"" >> $$filename; \
-		echo "keywords: [\"키워드1\", \"키워드2\", \"키워드3\"]" >> $$filename; \
-		echo "image: \"/assets/images/movies/$$date-$$safe_title.jpg\"" >> $$filename; \
-		echo "last_modified_at: $$date" >> $$filename; \
-		echo "---" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "![영화 포스터]({{ site.baseurl }}/assets/images/movies/$$date-$$safe_title.jpg){: .center-image}" >> $$filename; \
-		echo "" >> $$filename; \
-		echo "영화 리뷰 내용을 여기에 작성하세요." >> $$filename; \
-	fi; \
-	echo "📝 영화 포스터 이미지를 assets/images/movies/ 폴더에 $$date-$$safe_title.jpg 이름으로 추가하세요."; \
-	echo "💡 이미지 파일명은 소문자 .jpg 확장자를 사용하는 것을 권장합니다."; \
-	git add $$filename; \
-	git commit -S -m "Add movie review: $$title"; \
-	if [ -n "$$branch_name" ]; then \
-		git push origin $$branch_name; \
-		echo "✅ Movie 게시물이 생성되고 브랜치가 푸시되었습니다: $$filename (브랜치: $$branch_name)"; \
-	else \
-		echo "✅ Movie 게시물이 생성되었습니다: $$filename (현재 브랜치에 커밋됨)"; \
+		echo "✅ 초안이 생성되었습니다."; \
 	fi
 
 # 브랜치 보호를 위한 명령어들
@@ -178,7 +97,7 @@ push-post:
 	@current_branch=$$(git branch --show-current); \
 	read -p "커밋 메시지를 입력하세요: " commit_message; \
 	git add .; \
-	git commit -S -m "$$commit_message"; \
+	git commit -S -m "$$commit_message" || true; \
 	echo "🔄 원격 브랜치 확인 중..."; \
 	if git ls-remote --heads origin $$current_branch | grep -q $$current_branch; then \
 		echo "📥 원격 브랜치와 동기화 중..."; \
@@ -239,29 +158,29 @@ protect-main:
 # 이미지 파일명 대소문자 정리
 fix-image-names:
 	@echo "🖼️ 이미지 파일명을 소문자로 정리합니다..."; \
-	find assets/images -name "*.JPG" -exec sh -c 'mv "$1" "${1%.JPG}.jpg"' _ {} \; 2>/dev/null || true; \
-	find assets/images -name "*.PNG" -exec sh -c 'mv "$1" "${1%.PNG}.png"' _ {} \; 2>/dev/null || true; \
-	find assets/images -name "*.JPEG" -exec sh -c 'mv "$1" "${1%.JPEG}.jpeg"' _ {} \; 2>/dev/null || true; \
+	find assets/images -name "*.JPG" -exec sh -c 'mv "$$1" "$${1%.JPG}.jpg"' _ {} \; 2>/dev/null || true; \
+	find assets/images -name "*.PNG" -exec sh -c 'mv "$$1" "$${1%.PNG}.png"' _ {} \; 2>/dev/null || true; \
+	find assets/images -name "*.JPEG" -exec sh -c 'mv "$$1" "$${1%.JPEG}.jpeg"' _ {} \; 2>/dev/null || true; \
 	echo "✅ 이미지 파일명이 소문자로 정리되었습니다."
 
 # 이미지 파일명 확인
 check-image-names:
 	@echo "🔍 대문자 확장자를 가진 이미지 파일을 찾습니다..."; \
 	find assets/images -name "*.JPG" -o -name "*.PNG" -o -name "*.JPEG" | head -10; \
-	if [ $$(find assets/images -name "*.JPG" -o -name "*.PNG" -o -name "*.JPEG" | wc -l) -eq 0 ]; then \
+	if [ $$(( $$(find assets/images -name "*.JPG" -o -name "*.PNG" -o -name "*.JPEG" | wc -l) )) -eq 0 ]; then \
 		echo "✅ 모든 이미지 파일이 소문자 확장자를 사용합니다."; \
 	else \
 		echo "⚠️ 위 파일들의 확장자를 소문자로 변경하려면 'make fix-image-names'를 실행하세요."; \
 	fi
 
-# Google Analytics 4 설정 및 테스트
-.PHONY: setup-ga4 test-ga4 install-deps
+# Node.js 의존성 설치
+.PHONY: install-deps setup-ga4 test-ga4
 
 # GA4 환경 변수 설정
 setup-ga4:
 	@echo "🔧 Google Analytics 4 환경 변수 설정 중..."; \
 	if [ -f ".secrets/ga4-service-account.json" ]; then \
-		export GOOGLE_APPLICATION_CREDENTIALS="$$(pwd)/.secrets/ga4-service-account.json"; \
+		export GOOGLE_APPLICATION_CREDENTIALS="$$((pwd))/.secrets/ga4-service-account.json"; \
 		export GA4_PROPERTY_ID="503083435"; \
 		export GA4_MEASUREMENT_ID="G-H9LCES4944"; \
 		export JEKYLL_ENV="production"; \
