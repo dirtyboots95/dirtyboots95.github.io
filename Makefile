@@ -25,9 +25,10 @@ new-post:
 		git checkout -b $$branch_name; \
 		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
 	fi; \
-	read -p "제목을 입력하세요: " title; \
+	read -p "제목을 입력하세요 (기본값: untitled): " title; \
 	read -p "카테고리(선택, 기본값 journal): " category; \
 	read -p "태그(쉼표로 구분, 선택): " tags; \
+	if [ -z "$$title" ]; then title=untitled; fi; \
 	if [ -z "$$category" ]; then category=journal; fi; \
 	date=$$(date +%Y-%m-%d); \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
@@ -59,9 +60,10 @@ new-draft:
 		git checkout -b $$branch_name; \
 		echo "✅ 브랜치가 생성되었습니다: $$branch_name"; \
 	fi; \
-	read -p "제목을 입력하세요: " title; \
+	read -p "제목을 입력하세요 (기본값: untitled): " title; \
 	read -p "카테고리(선택): " category; \
 	read -p "태그(쉼표로 구분, 선택): " tags; \
+	if [ -z "$$title" ]; then title=untitled; fi; \
 	safe_title=$$(echo "$$title" | sed 's/[^가-힣a-zA-Z0-9\s-]//g' | sed 's/\s\+/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$$//' | sed 's/--/-/g'); \
 	filename="_drafts/$$safe_title.md"; \
 	echo "---" > $$filename; \
