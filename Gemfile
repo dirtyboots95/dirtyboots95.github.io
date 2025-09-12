@@ -38,3 +38,4 @@ gem "csv"
 gem "logger"
 gem "base64"
 gem "jekyll-admin", group: :jekyll_plugins
+gem "sinatra-cross_origin"
